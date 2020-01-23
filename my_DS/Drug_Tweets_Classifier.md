@@ -236,7 +236,7 @@ def kimchi(text, custom_list =  ["NNP","NNG","VV","VA","XR", "UNKNOWN"]):
 
 
 
-	### 	7) 자소 분리 & 한글만 보기
+###  7) 자소 분리 & 한글만 보기
 
 ```python
 ## 각 음절에 맞게 자소를 꼴뚜기로 분리해준다.
