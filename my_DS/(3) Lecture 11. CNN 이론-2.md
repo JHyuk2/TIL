@@ -61,7 +61,7 @@
 
   ### 5) In Practice:
 
-  ![image-20200305175329118](C:\Users\dm705\AppData\Roaming\Typora\typora-user-images\image-20200305175329118.png)
+  ![image-20200305175329118](../capture/CNN_padding.png)
 
   - Convolution Layer을 실행시켜도 같은 사이즈의 이미지가 나옴.
 
@@ -74,4 +74,4 @@
 
     
 
-    
+    다음시간엔 LeNet-5 알고리즘을 사용한 케이스 스터디를 예시로 공부할 예정
