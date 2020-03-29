@@ -1,0 +1,1 @@
+print(sorted.__doc__)
