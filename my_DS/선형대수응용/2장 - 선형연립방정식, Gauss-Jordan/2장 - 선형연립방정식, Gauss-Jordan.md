@@ -169,7 +169,24 @@ print("x =", A.solve_right(b))
 
 
 
-## 3. 실습
+## 3. 행렬 연산
+
+여긴 고등학교때 배운 행렬 내용과 다 똑같다.
+
+> Keywords
+>
+> - 영행렬(zero matrix)
+> - 단위행렬(Identity matrix)
+> - 전치행렬(Transpose matrix)
+>   - (AB)^T = B^T * A^T
+>   - (kA)^T = k*A^T
+> - 대각합(trace)
+>   - tr(AB) = tr(BA)
+> - MNIST DATASET - (28 by 28)  img -  pixel of hand-write numbers
+
+
+
+## 3. 실습 예제
 
 ```python
 # 1) 예시
@@ -199,3 +216,4 @@ print(mat_RREF)
 >> 최하단에 선행성분이 없는데(0행렬), 선행성분이 1이므로 해가 존재하지 않는다. (False)
 '''
 ```
+
