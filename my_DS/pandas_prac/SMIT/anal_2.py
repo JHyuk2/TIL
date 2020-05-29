@@ -1,9 +1,6 @@
-from pprint import pprint as pp
 import pandas as pd
 import datetime
 import os
-
-data = pd.read_csv('0514 Daily.csv')
 
 # 체이닝 에러 끄기
 pd.options.mode.chained_assignment = None  # default='warn'
@@ -14,12 +11,12 @@ def is_AM(data):
 def read_myexcel(file_location):
     # 파일 읽기
     data = pd.read_csv(file_location,
-                            usecols = ['타임스탬프', '프로필 닉네임을 적어주세요.','1. 오늘의 기상시각은?', '2. 오늘의 공부 시간은?', 
-                            '3. 오늘의 스터디 플랜 달성도', '4. 개인 습관 달성 여부', '5. 오늘 본인의 학습 만족도'])
+                            usecols = ['타임스탬프', '이름을 알려주세요','1.  오늘의 기상 시각은?', '2. 오늘의 공부 시간은?', 
+                            '3. 오늘 스터디 목표 달성도', '4. 개인 습관 달성 여부', '5. 오늘 본인의 학습 만족도'])
     data.columns =  ['date' , 's_name', 'wakeup_time', 'study_time', 'completion', 'habit', 'satisfaction']
     # 날짜 형식 맞추기
     dates = data['date']
-    date_list = dates[0].split('.')
+    date_list = dates[0].split('/')
     year = int(date_list[0].strip())
     month = int(date_list[1].strip())
     day = int(date_list[2][:3].strip())
@@ -29,12 +26,9 @@ def read_myexcel(file_location):
     # 기상시각 
     wakeups = data['wakeup_time']
     for idx, w in enumerate(wakeups):
-        waketime_list = w[3:].split(':')
+        waketime_list = w.split(':')
         h = int(waketime_list[0])
         m = int(waketime_list[1])
-        if not is_AM(w[:2]):
-            if h != 12:
-                h += 12
         w_time = datetime.time(hour = h, minute = m)
         data['wakeup_time'][idx] = w_time
     
@@ -73,30 +67,31 @@ def read_myexcel(file_location):
     data['satisfaction'].astype(int)
     return data
 
-data = pd.read_csv('0429 Daily.csv',
-                    usecols=['타임스탬프', '이름을 알려주세요'],)
-pp(data.index)
-pp(data.columns)
-time = data['타임스탬프']
-name = data['이름을 알려주세요']
-print(time, name)
 
-# # ## 실제 실행문
-# # daily_0417 = read_myexcel('0429 Daily.csv')
-# # daily_0418 = read_myexcel('0430 Daily.csv')
-# # daily_0419 = read_myexcel('0501 Daily.csv')
-# # daily_0420 = read_myexcel('0502 Daily.csv')
-# # daily_0421 = read_myexcel('0503 Daily.csv')
-# # daily_0422 = read_myexcel('0504 Daily.csv')
-# # daily_0423 = read_myexcel('0505 Daily.csv')
+# 실제 실행문
+daily_0429 = read_myexcel('0429 Daily.csv')
+daily_0430 = read_myexcel('0430 Daily.csv')
+daily_0501 = read_myexcel('0501 Daily.csv')
+daily_0502 = read_myexcel('0502 Daily.csv')
+daily_0503 = read_myexcel('0503 Daily.csv')
+daily_0504 = read_myexcel('0504 Daily.csv')
+daily_0505 = read_myexcel('0505 Daily.csv')
+daily_0506 = read_myexcel('0505 Daily.csv')
+daily_0507 = read_myexcel('0505 Daily.csv')
+daily_0511 = read_myexcel('0511 Daily.csv')
+# daily_0512 = read_myexcel('0512 Daily.csv')
+# daily_0513 = read_myexcel('0513 Daily.csv')
+# daily_0514 = read_myexcel('0514 Daily.csv')
+# daily_0515 = read_myexcel('0515 Daily.csv')
 
-# # # 데이터 연결
-# # daily_list = pd.concat([daily_0417, daily_0418, daily_0419, daily_0420, daily_0421, daily_0422, daily_0422])
-# # daily_list = daily_list.sort_values(['s_name', 'date'], ascending = [False, True])
 
-# # 양식이 정리된 데이터로 변경
-# base_dir = 'C:\\Users\\win\\Hyuk2Coding\\TIL\\my_DS\\pandas_prac'
-# file_name = 'daily_list'
-# xlsx_dir = os.path.join(base_dir, file_name)
+# 데이터 연결
+daily_list = pd.concat([daily_0429, daily_0430, daily_0501, daily_0502, daily_0503, daily_0504, daily_0505, daily_0506, daily_0507, daily_0511])
+daily_list = daily_list.sort_values(['s_name', 'date'], ascending = [False, True])
 
-# daily_list.to_csv('output_2기.csv', header = True, encoding = 'utf-8-sig', index=False)
+# 양식이 정리된 데이터로 변경
+base_dir = 'C:\\Users\\win\\Hyuk2Coding\\TIL\\my_DS\\pandas_prac'
+file_name = 'daily_list'
+xlsx_dir = os.path.join(base_dir, file_name)
+
+daily_list.to_csv('output_2기.csv', header = True, encoding = 'utf-8-sig', index=False)

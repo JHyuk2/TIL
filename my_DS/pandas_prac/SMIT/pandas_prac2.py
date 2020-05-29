@@ -1,30 +1,32 @@
 import pandas as pd
+import datetime
+import os
 
-# 파일 불러오기
-def read_file(file):
-    data = pd.read_excel(file, sheet_name = '설문지 응답 시트1')
-    name = data['1. 이름']
-    wakeup_time = data['2. 기상시간']
-    new_data = pd.DataFrame({'name':name, 'wakeup_time':wakeup_time})
-    return new_data
+# 체이닝 에러 끄기
+pd.options.mode.chained_assignment = None  # default='warn'
 
-# 시간데이터 입력받은거 다듬기
-def time_trimmer(time_data):
-    trim_hour = ['시','/','-']
-    res = []
-    for t in time_data:
-        # 1) trimming
-        t = t.replace(' ','')
-        t.replace('분', '')
-        for h in trim_hour:
-            t = t.split(h)
-        res.append(t)
-    return res
+def is_AM(data):
+    return True if data == '오전' else False
 
-data = read_file('test2.xlsx')
-times = data['wakeup_time']
-print(type(times))
-for t in times:
-    print(t)
-# time_data = time_trimmer(data['wakeup_time'])
-# print(time_data)
+def read_myexcel(file_location):
+    # 파일 읽기
+    data = pd.read_csv(file_location,
+                            usecols = ['타임스탬프', '이름을 알려주세요','1.  오늘의 기상 시각은?', '2. 오늘의 공부 시간은?', 
+                            '3. 오늘 스터디 목표 달성도', '4. 개인 습관 달성 여부', '5. 오늘 본인의 학습 만족도'])
+    data.columns =  ['date' , 's_name', 'wakeup_time', 'study_time', 'completion', 'habit', 'satisfaction']
+    return data
+
+data = read_myexcel('0501 Daily.csv')
+
+
+# 기상시각 
+wakeups = data['wakeup_time']
+for idx, w in enumerate(wakeups):
+    waketime_list = w.split(':')
+    print(waketime_list)
+    h = int(waketime_list[0])
+    m = int(waketime_list[1])
+    w_time = datetime.time(hour = h, minute = m)
+    data['wakeup_time'][idx] = w_time
+
+print(data.wakeup_time)
