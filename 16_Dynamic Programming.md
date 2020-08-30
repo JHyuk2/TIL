@@ -26,7 +26,7 @@ ex) 피보나치 수열 (An = An-1 + An-2, A1=1, A2=2)
 
 
 
-![fibo](C:\Users\win\Desktop\fibo.jpg)
+![fibo](fibo.jpg)
 
 함수로 표현을 하게 되면
 
@@ -103,7 +103,7 @@ print(d[n])
 
 탑다운 방식이 수학적으로 직관적이고 이해하긴 쉽지만, 메모리나 스택오버플로의 영역에선 불리할 수 있다.
 
-(대부분 실제로는 거의 비슷하다.)![fibo_effect](C:\Users\win\Desktop\fibo_effect.jpg)
+(대부분 실제로는 거의 비슷하다.)![fibo_effect](fibo_effect.jpg)
 
 > 시간복잡도가 O(N)이 된다.
 
