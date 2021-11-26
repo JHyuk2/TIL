@@ -1,0 +1,130 @@
+# SQL 재활치료중...
+
+## 프로그래머스 SQL 문제를 풀며 정리해보았다.
+<br/>
+
+1. dtype 이 datetime인 경우 hour, minute, second를 사용하여 시/분/초 만 골라 사용할 수 있다.  
+    ```SQL
+    # GROUP BY 입양 시각 구하기 2번 문제
+    SELECT HOUR(DATETIME) AS 'HOUR', COUNT(HOUR(DATETIME)) AS 'COUNT'
+    FROM ANIMAL_OUTS
+    GROUP BY HOUR(DATETIME)
+    ```
+    
+    
+    
+2. IFNULL을 사용하여 값이 NULL값일 때 DEFAULT 값을 지정해줄 수 있다.  
+    
+    ```SQL
+    # IN NULL 처리하기 문제
+    SELECT ANIMAL_TYPE, IFNULL(NAME, 'No name'), SEX_UPON_INTAKE
+    FROM ANIMAL_INS
+    ORDER BY ANIMAL_ID
+    ```
+    
+    
+    
+3. JOIN문은 데이터처리에서 가장 중요하다고 볼 수 있는데, 스택오버플로우에 잘 정리된 글이 있기에 여기에 다시 정리해보려 한다. 
+   
+   [What is Difference between 'INNER JOIN' and 'OUTER JOIN' in stack overflow](https://stackoverflow.com/questions/38549/what-is-the-difference-between-inner-join-and-outer-join)
+   
+   
+   
+   아래의 테이블을 사용해서 여러 예시들을 들어보자
+   
+   #### **Source Table**
+   
+    <img align='left' src="https://i.stack.imgur.com/LVYKx.png" />
+   
+   
+   
+   
+   
+   
+   
+   ---
+   
+   - 1. #### INNER JOIN (a.k.a Equi Join)
+   
+        > 가장 직관적인 조인으로, 공통되는 속성 골라 `on`절을 사용하여 결과를 출력하는 조인이다.
+        >
+        > <iframe src='https://i.stack.imgur.com/kZcvR.gif' width=50 height= 250>
+   
+        
+   
+   - 2. #### OUTER JOIN
+   
+        > a. 한 쪽의 정보를 모두 사용한다.
+        >
+        > b. 공통되는 속성(`on`절)을 통해 조인하는 테이블에서 모두 가져온다.
+        >
+        > c. 공통되지 않는 경우, 원래의 컬럼에 Null값을 채워넣어 새로운 결과에 추가한다.
+        >
+        >  ![left](https://i.stack.imgur.com/4bzv2.png#left)![right](https://i.stack.imgur.com/LIOW4.png)
+        >
+        >  **LEFT OUTER JOIN   |  RIGHT OUTER JOIN**
+        >
+        > 
+        >
+        > ex) FULL OUTER JOIN을 예로 들어보면 다음과 같다.
+        >
+        > <iframe src='https://i.stack.imgur.com/VUkfU.gif' width=80 height=280>
+   
+   
+   
+   
+   
+   - 3. #### CROSS JOIN (a.k.a Cartesian Product)
+   
+        > 카테시안 곱이라고도 자주 불린다. `on` 절을 사용하지 않고 모든 열의 경우의수를 다 곱하여 나열해버린다.
+        >
+        > ##### SELECT A.Colour, B.Colour FROM A CROSS JOIN B
+        >
+        > ​						<img align='' src="https://i.stack.imgur.com/cv3t6.png">
+        >
+        > ​	
+        >
+        > 만약 여기서 Equi join(A == B)을 통해 바꾼다면, 아래와 같이 나온다.
+        >
+        > <img align='left' src='https://i.stack.imgur.com/a8IHd.png'>
+   
+     ---
+   
+     조금 더 심화된 내용을 알아보자
+   
+     
+   
+   - 4. #### COALESCE(expression1, expression2, expression3 ...)
+   
+        > 표현식들 중 **Null값이 아닌 첫 번째 값**을 반환하는 함수이다.
+        >
+        > ```SQL
+        > SELECT COALESCE(NULL, NULL) # ERROR (NULL)
+        > SELECT COALESCE(NULL, NULL, 1) # 1
+        > ```
+        >
+        > 
+        >
+        > 위의 FULL OUTER JOIN 의 결과물로부터 어떻게 달라지는지를 확인해보자.
+        >
+        > ##### SELECT A.Colour, B.Colour FROM A FULL OUTER JOIN B ON A.Colour = B.Colour
+        >
+        > <img src='https://i.stack.imgur.com/iVoqu.png' style='float:left'>
+        >
+        > 2번의 FULL OUTER JOIN 의 결과물을 그대로 가져왔다.
+        >
+        > 
+        >
+        > ##### SELECT A.Colour, B.Colour FROM A FULL OUTER JOIN B ON 1 = 0
+        >
+        > cross join에서 1=0에 해당되는 사항이 없기 때문에 양쪽 모든 행은 NULL값으로 채워진 FULL OUTER JOIN이 생성된다.
+        >
+        > <img src='https://i.stack.imgur.com/gtIhf.png' align='left'>
+        >
+        > 그리고 여기서 COALESCE 함수를 적용해 아래와 같이 표현할 수 있다.
+        >
+        > ##### SELECT COALESCE(A.Colour, B.Colour) AS Colour FROM A FULL OUTER JOIN B ON 1 = 0
+        >
+        > <img align='left' src='https://i.stack.imgur.com/WPu9W.png'>
+   
+        이런식으로 표현이 가능하다.
