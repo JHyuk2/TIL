@@ -48,7 +48,7 @@
    
         > 가장 직관적인 조인으로, 공통되는 속성 골라 `on`절을 사용하여 결과를 출력하는 조인이다.
         >
-        > <iframe src='https://i.stack.imgur.com/kZcvR.gif' width=50 height= 250>
+        > <iframe src='https://i.stack.imgur.com/kZcvR.gif' width=250 height= 250>
    
         
    
@@ -68,7 +68,7 @@
         >
         > ex) FULL OUTER JOIN을 예로 들어보면 다음과 같다.
         >
-        > <iframe src='https://i.stack.imgur.com/VUkfU.gif' width=80 height=280>
+        > <iframe src='https://i.stack.imgur.com/VUkfU.gif' width=250 height=280>
    
    
    
