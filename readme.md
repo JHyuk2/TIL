@@ -4,18 +4,14 @@
 
 - One day - One commit
 - Set specific goals
-- Summarize on my blog (github.io)
+- Summarize on my blog (jhyuk.github.io)
 
-
-
-### Required Competency
+### Required Capacity
 
 1) SQL
 2) Algorithm (w/ Numpy & Pandas)
 3) Deep Learning / Reinforcement Learning
 4) English ability for reading papers - about voice recognition
-
-
 
 ---
 
