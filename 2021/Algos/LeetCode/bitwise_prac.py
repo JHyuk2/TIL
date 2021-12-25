@@ -4,7 +4,7 @@
 ## --------- 1st. Using 'for' expression ----------
 ## 
 
-nums = [1, 2, 3, 4]
+nums = [16, 8, 4, 2, 1]
 # permutes = []
 # combis = []
 
@@ -36,9 +36,29 @@ nums = [1, 2, 3, 4]
 
 
 ## 2-1) powerset
-for i in range(1<<len(nums)):
-    for j in range(i+1):
-        if i & (i<<j):
-            print(f'[i, i<<j]: [{i}, {i<<j}], {bin(i)}, {bin(i<<j)}', end=' ')
-    print()
+## just using normal loop to powerset
 
+## making error-1
+# for i in range(1<<len(nums)):
+#     print(f'i: {i} ', end='// ')
+#     for j in range(i+1):
+#         if i & (i<<j):
+#             print(f'{nums[j]}', end=' ') 
+#     print()
+
+# 5, 10, 20 has also same result(1,1,1) tho...it's not true
+# i = 5 # 101
+# i = 10 # 1010 
+# i = 20 # 10100
+
+## second step. just using make binary machanism
+def powerSet(items:list) -> list:
+    for i in range(1<<len(nums)):
+        combo = []
+        for j in range(len(nums)):
+            if (i >> j)%2 == 1:
+                combo.append(nums[j])
+        yield combo
+    
+subsets = powerSet(nums)
+print(list(subsets))
