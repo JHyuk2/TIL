@@ -27,13 +27,10 @@ nums = [16, 8, 4, 2, 1]
 # If i had a 4-length of number,
 # The binary numbers are arranged in this order
 # 00000 > 00001 > 00010 > 00011 ...
-# What if i want to make a list with at least one component?
-
-
+# What if i want to make a list with at least one component? => just skip 0
 ## Bitwise examples
 ## print(1<<3) # 0001 => 1000
 ## print(3<<1) # 011 => 110 
-
 
 ## 2-1) powerset
 ## just using normal loop to powerset
@@ -46,19 +43,28 @@ nums = [16, 8, 4, 2, 1]
 #             print(f'{nums[j]}', end=' ') 
 #     print()
 
-# 5, 10, 20 has also same result(1,1,1) tho...it's not true
+# 5, 10, 20 has also same result(1,0,1) tho...it's not true
 # i = 5 # 101
 # i = 10 # 1010 
 # i = 20 # 10100
 
-## second step. just using make binary machanism
-def powerSet(items:list) -> list:
-    for i in range(1<<len(nums)):
-        combo = []
-        for j in range(len(nums)):
-            if (i >> j)%2 == 1:
-                combo.append(nums[j])
-        yield combo
+## Easist way to make powerset. just following binary machanism
+class MyClass:    
+    def __init__(self):
+        return
+        
+    def makePowerSet(self, items):
+        for i in range(1<<len(items)):
+            self.combo = []
+            for j in range(len(items)):
+                if (i >> j)%2 == 1:
+                    self.combo.append(items[j])
+            yield self.combo
+
+    def powerSet(self, items):
+        return list(self.makePowerSet(items))
     
-subsets = powerSet(nums)
-print(list(subsets))
+tc = MyClass()
+print(tc.powerSet(nums))
+
+# print(subsets)
