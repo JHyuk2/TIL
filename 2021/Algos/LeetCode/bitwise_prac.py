@@ -4,7 +4,6 @@
 ## --------- 1st. Using 'for' expression ----------
 ## 
 
-nums = [16, 8, 4, 2, 1]
 # permutes = []
 # combis = []
 
@@ -48,8 +47,8 @@ nums = [16, 8, 4, 2, 1]
 # i = 10 # 1010 
 # i = 20 # 10100
 
-## Easist way to make powerset. just following binary machanism
-class MyClass:    
+## Easist way to make powerset. just following binary mechanism
+class Iterations:    
     def __init__(self):
         return
         
@@ -61,10 +60,38 @@ class MyClass:
                     self.combo.append(items[j])
             yield self.combo
 
-    def powerSet(self, items):
+    def powerSet(self, items:list) -> list:
         return list(self.makePowerSet(items))
     
-tc = MyClass()
-print(tc.powerSet(nums))
+    ## powerset will helps make combo and permutes easily.
+    def combinations(self, items:list, length:int) -> list:
+        powerset = self.powerSet(items)
+        temp = []
+        for ps in powerset:
+            if len(ps) == length:
+                temp.append(ps)
+        return temp
+    
+    # arrangements of combinations
+    def permutations(self, items:list, length:int) -> list:
+        combos = self.combinations(items, length)
+        for combo in combos:
+            for components in combo:
+                combo.pop(components)
+        return
+
+if __name__ == "__main__":
+    nums = [16, 8, 4, 2, 1]
+    tc = Iterations()
+    # temp = tc.powerSet(nums)
+    combos = tc.combinations(nums, 3)
+    res = []
+    for combo in combos:
+        stack = []
+        
+
+    
+
+
 
 # print(subsets)
