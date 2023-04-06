@@ -19,7 +19,7 @@
 
 import sys
 
-sys.stdin = open('./coding test prac/SW/2817_sample.txt')
+sys.stdin = open('./coding test prac/SW/2817_sample.txt') # 로컬환경에서만 사용
 
 data = list(map(int, sys.stdin.readline().split()))
 print(data)
