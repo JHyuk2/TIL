@@ -1,20 +1,28 @@
 # 학습 로드맵 가이드라인
 
+---
+## 필수 강좌
 |강좌명|대분류|수강신청 링크|후기 링크|수강 여부|
 |------|-------|----|----|----|
 |[강서대학교 이상철 교수의 기초 경영통계 및 확률](https://www.youtube.com/playlist?list=PLEUKy_nwlzwHhkGKF7l3lWxqYKTjnnv5M)|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1466)|[경영통계](https://docs.google.com/spreadsheets/d/1LVh4vL7HR_imA-Q5u6GVP05Ke2371twqbY0iYx-LmqA/edit?usp=drive_link)|:white_check_mark:|
 |[서울대 이상화 교수의 확률이론](https://www.youtube.com/playlist?list=PL4KjArv2DnjAaEjXXUJnVNeuli32JPQ-A)|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1415)|[확률이론](http://docs.google.com/spreadsheets/d/1IoluY343m2ZzEFTyOMQB4EC5Mchy2b6RoMBQWzxEw7E/edit)|:white_check_mark:|
 |[서울대 이상화 교수의 선형대수](https://www.youtube.com/@user-xx1mm6mk5y/playlists)|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1417)|[선형대수](https://docs.google.com/spreadsheets/d/17Z7mjNEvU0NcyiV4_qVbuUAQmSa2hC5Hoq2_zZM1Va0/edit#gid=0)|:white_check_mark:|
-|경희대 이상준 교수의 만만한 수학 TV 미적분학|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1467)|[수학](https://docs.google.com/spreadsheets/d/1KZbSn7CoQOCX83C5sBe3KuPQGf0jsXEwviEzagtpzEM/edit?usp=drive_link)|:white_check_mark:|
 |머신러닝 딥러닝 입문자를 위한 초스피드 기초수학|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1460)|[기초수학](https://docs.google.com/spreadsheets/d/1Kca0ZVvzK_K8Gr1nfxdeS1Aixdz4Slk1WCxpoNuJZGs/edit?usp=drive_link)|:heavy_check_mark:|
 |의미를 탐구하는 기초 수학 : 자연 상수 e가 필요한 이유|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1459)|[자연상수](https://docs.google.com/spreadsheets/d/13Y6s5cRLFArynr3OJS84RhxJJpFv28EXvjoOhSj3GP0/edit?usp=drive_link)|:heavy_check_mark:|
 |인공지능 및 컴퓨터 비전을 위한 수학 핵심 개념노트|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1419)|[핵심수학](https://docs.google.com/spreadsheets/d/1DK4VcMgrgR1Opg6sFF2VLE80DHCs6Y1M6qTRk4cc1L0/edit?usp=drive_link)|:white_check_mark:|
 |머신러닝/딥러닝 수학 입문I - T아카데미|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1418)|[딥러닝수학](https://docs.google.com/spreadsheets/d/1PvYdXIySMw72OPXPPR6r2hYJZZvO2Ox6Mfw5_1ksyyE/edit?usp=drive_link)|:white_check_mark:|
 |분석을 위한 파이썬 프로그래밍|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1420)|[분석파이썬기초](https://docs.google.com/spreadsheets/d/1TLDlzYsVs1kS09DEUfSSXSNB9MHcYIy4ooDkBror7qg/edit?usp=drive_link)|:white_check_mark:|
-|윤인성의 혼자 공부하는 파이썬 개정판|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1461)|[파이썬기초_윤인성](https://docs.google.com/spreadsheets/d/1zxaDzI597QYVfyjRhQ_5ywWGZw451AAsqZC1uELdDwo/edit?usp=drive_link)|:white_check_mark:|
+|윤인성의 혼자 공부하는 파이썬 개정판|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1461)|[혼파이썬](https://docs.google.com/spreadsheets/d/1zxaDzI597QYVfyjRhQ_5ywWGZw451AAsqZC1uELdDwo/edit?usp=drive_link)|:white_check_mark:|
 |Matplotlib|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1468)|[Matplotlib](https://docs.google.com/spreadsheets/d/1u_JDmyGrH-lX7LKFmA8unBZy5vA9zGna-tVKvOlpglQ/edit?usp=drive_link)|:white_check_mark:|
 |데이터 시각화를 위한 태블로|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1421)|[태블로](https://docs.google.com/spreadsheets/d/1jLQcB3glub5jhqPKoQ12DxZ97E1qh2sae9UySvcv6PY/edit?usp=drive_link)|:white_check_mark:|
 |Power BI 컨설팅 강의|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1469)|[PowerBI](https://docs.google.com/spreadsheets/d/1aIQdYso_FMx-XINTQAGD1NfzVVznjoPV5TVYIzAodwI/edit?usp=drive_link)|:white_check_mark:|
+
+---
+
+## 선택 강좌
+|강좌명|대분류|수강신청 링크|후기 링크|수강 여부|
+|------|-------|----|----|----|
+|경희대 이상준 교수의 만만한 수학 TV 미적분학|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1467)|[수학](https://docs.google.com/spreadsheets/d/1KZbSn7CoQOCX83C5sBe3KuPQGf0jsXEwviEzagtpzEM/edit?usp=drive_link)|:white_check_mark:|
 |빅데이터 상식사전 1|데이터 분석 기초 수집 및 저장|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1431)|[상식사전1](https://docs.google.com/spreadsheets/d/1FQAx6H-kXXAT2FnfFIOnX-OncrbodusIzxmeMd34ZGU/edit?usp=drive_link)|:white_check_mark:|
 |빅데이터 상식사전 2|데이터 분석 기초 수집 및 저장|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1430)|[상식사전2](https://docs.google.com/spreadsheets/d/1DOUIkVblMDGhWvGK6WVNQR_ALqJsJYQq0W1uCbT0PJY/edit?usp=drive_link)|:white_check_mark:|
 |데이터 분석 기획|데이터 분석 기초 수집 및 저장|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1429)|[분석기획](https://docs.google.com/spreadsheets/d/1-0NBseZb24GeyUu1URqC0J7D--CYrtFPUty1XKvmE48/edit?usp=drive_link)|:white_check_mark:|
