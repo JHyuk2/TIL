@@ -1,6 +1,5 @@
 # 학습 로드맵 가이드라인
 
----
 ## 필수 강좌
 |강좌명|대분류|수강신청 링크|후기 링크|수강 여부|
 |------|-------|----|----|----|
@@ -17,7 +16,10 @@
 |데이터 시각화를 위한 태블로|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1421)|[태블로](https://docs.google.com/spreadsheets/d/1jLQcB3glub5jhqPKoQ12DxZ97E1qh2sae9UySvcv6PY/edit?usp=drive_link)|:white_check_mark:|
 |Power BI 컨설팅 강의|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1469)|[PowerBI](https://docs.google.com/spreadsheets/d/1aIQdYso_FMx-XINTQAGD1NfzVVznjoPV5TVYIzAodwI/edit?usp=drive_link)|:white_check_mark:|
 
+<br>
 ---
+
+<br>
 
 ## 선택 강좌
 |강좌명|대분류|수강신청 링크|후기 링크|수강 여부|
