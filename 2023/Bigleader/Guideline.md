@@ -12,6 +12,7 @@
 |머신러닝/딥러닝 수학 입문I - T아카데미|인공지능 학습을 위한 수학및통계|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1418)|[딥러닝수학](https://docs.google.com/spreadsheets/d/1PvYdXIySMw72OPXPPR6r2hYJZZvO2Ox6Mfw5_1ksyyE/edit?usp=drive_link)|:white_check_mark:|
 |분석을 위한 파이썬 프로그래밍|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1420)|[분석파이썬기초](https://docs.google.com/spreadsheets/d/1TLDlzYsVs1kS09DEUfSSXSNB9MHcYIy4ooDkBror7qg/edit?usp=drive_link)|:white_check_mark:|
 |윤인성의 혼자 공부하는 파이썬 개정판|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1461)|[혼파이썬](https://docs.google.com/spreadsheets/d/1zxaDzI597QYVfyjRhQ_5ywWGZw451AAsqZC1uELdDwo/edit?usp=drive_link)|:white_check_mark:|
+|분석을 위한 파이썬 라이브러리|기초 파이썬|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1425)|[라이브러리](https://docs.google.com/spreadsheets/d/1zxaDzI597QYVfyjRhQ_5ywWGZw451AAsqZC1uELdDwo/edit#gid=0)|:heavy_check_mark:|
 |Matplotlib|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1468)|[Matplotlib](https://docs.google.com/spreadsheets/d/1u_JDmyGrH-lX7LKFmA8unBZy5vA9zGna-tVKvOlpglQ/edit?usp=drive_link)|:white_check_mark:|
 |데이터 시각화를 위한 태블로|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1421)|[태블로](https://docs.google.com/spreadsheets/d/1jLQcB3glub5jhqPKoQ12DxZ97E1qh2sae9UySvcv6PY/edit?usp=drive_link)|:white_check_mark:|
 |Power BI 컨설팅 강의|데이터 시각화 및 대시보드|[링크](https://bigleader.first10.co.kr/?m=shop&uid=1469)|[PowerBI](https://docs.google.com/spreadsheets/d/1aIQdYso_FMx-XINTQAGD1NfzVVznjoPV5TVYIzAodwI/edit?usp=drive_link)|:white_check_mark:|
