@@ -1,23 +1,20 @@
 # Today I Learned
 
-### Rule
-
+### Rule  
 - One day - One commit
-- Set specific goals
-- Summarize on my blog (jhyuk.github.io)
 
 ### Required Capacity
 
 1) SQL
-2) Algorithm (w/ Numpy & Pandas)
-3) Deep Learning / Reinforcement Learning
-4) English ability for reading papers - about voice recognition
+2) EDA - Pandas & Seaborn
+   - [1. Initialize EDA]('2023\EDA\1. Initial EDA')
+3) ML/DL/RL
 
 ---
 
 ### To do list
 
-1) Solving Question - At least two question per day
-2) Kaggle - If anything i can do, just do it
+1) SQL - one solve per day  
+2) Kaggle  
 
 3. Coursera free lecture | ML
