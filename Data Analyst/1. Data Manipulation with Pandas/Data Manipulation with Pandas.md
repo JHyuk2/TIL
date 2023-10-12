@@ -362,3 +362,113 @@ dogs_ind3.sort_index(level=["color", "breed"], ascending=[True, False])
 
 **(다만, 다른 사람의 코드를 읽어야 하는 경우에는 어떻게 작동하는지 아는 것이 매우 중요하다.)**
 
+
+
+### 5. Slicing and subsetting with .loc and .iloc
+
+슬라이싱을 통해 연속된 요소를 선택할 수 있다.
+
+```python
+breeds = ["Labrador", "Poodle",
+         "Chow Chow", "Schnauzer",
+         "Labrador", "Chihuahua",
+         "St. Bernard"]
+
+breeds[2:5] # ["Chow Chow", "Schnauzer", "Labrador"]
+```
+
+하지만 조금 더 잘 사용하기 위해선 먼저 정렬을 해주는 게 좋다.
+
+#### Sort the index before you slice
+
+```python
+dogs_srt = dogs.set_index(["breed", "color"]).sort_index()
+# Slicing the outer index level
+
+# final value "Poodle" isincluded
+dogs_srt.loc["Chow Chow":"Poodle"]
+```
+
+리스트의 슬라이싱과 두 가지 차이점이 있다.
+
+1. 행 번호를 지정하는 대신 인덱스 값을 지정
+2. 최종 값이 포함되어 있음
+
+
+
+근데, 내부 인덱스 수준에서는 동일하게 또 적용되진 않는다.
+
+#### Slicing the inner index levels badly
+
+```python
+# 이렇게 해도 아무런 값이 출력되지 않는다.
+dogs_srt.loc["Tan":"Grey"]
+```
+
+![dogs_dataset](dogs_dataset.png)
+
+이를 제대로 출력하기 위해선 inner level로 제대로 접근해야 한다.
+
+#### Slicing the inner index levels correctly
+
+```python
+dogs_srt.loc[("Labrador", "Brown"), ("Schnauzer", "Grey")]
+```
+
+물론, DataFrame은 2차원 개체이므로 열을 슬라이스 할 수도 있다.
+
+```python
+# Slicing columns
+dogs_srt.loc[:, "name":"height_cm"]
+
+# Slice twice (행과 열을 동시에 슬라이스)
+dogs_srt.loc[("Labrador", "Brown"):("Schnauzer", "Grey"),
+            "name":"height_cm"]
+'''
+첫 : (Labrador~Schnauzer) 는 인덱스에 대한 슬라이싱을,
+두번째 : (name~height) 는 컬럼에 대한 슬라이싱을 진행한다.
+'''
+```
+
+
+
+#### **슬라이싱의 중요한 사용 방법 중 하나는, 데이터프레임을 날짜 범위별로 하위 집합으로 만드는 것!**
+
+> 날짜가 문자열로 전달되는 것 잊지말자. 중요하다!!!
+
+```python
+# Dog days
+dogs = dogs.set_index("date_of_birth").sort_index()
+
+# get dogs with date_of_brith between 2014-08-25 and 2016-09-16
+dogs.loc["2014-08-25":"2016-09-16"] # 날짜는 문자열로 전달됨.
+
+# 유용한 기능은, 그냥 부분적인 날짜로도 슬라이싱이 가능하다는 것.
+dogs.loc["2014":"2016"]
+```
+
+
+
+리스트의 슬라이싱과 유사하게, 열번호 혹은 행 번호로도 슬라이싱을 할 수 있다.
+
+#### Subsetting by row/column number
+
+```python
+dogs.iloc[2:5, 1:4]
+```
+
+다만,  loc사용과 달리 최종 값이 슬라이스에 포함되지 않는다.
+
+
+
+### 6. Working with pivot tables
+
+```python
+# Pivoting the dog pack
+dogs_height_by_breed_vs_color = dog_pack.pivot_table(
+	"height_cm", index="breed", columns="color")
+
+# .loc slicing
+dogs_height_by_breed_vs_color.loc["Chow Chow":"Poodle"]
+```
+
