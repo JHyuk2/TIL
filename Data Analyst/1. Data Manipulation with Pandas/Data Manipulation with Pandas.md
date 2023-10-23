@@ -468,7 +468,32 @@ dogs.iloc[2:5, 1:4]
 dogs_height_by_breed_vs_color = dog_pack.pivot_table(
 	"height_cm", index="breed", columns="color")
 
-# .loc slicing
+# .loc slicing is a power combo
 dogs_height_by_breed_vs_color.loc["Chow Chow":"Poodle"]
+
+# The axis argument
+dogs_height_by_breed_vs_color.mean(axis="index") # default
+dogs_height_by_breed_vs_color.mean(axis="columns")
+
+'''
+	기본값은 "인덱스"이며, "행 전체의 통계 계산"을 의미함.
+'''
+```
+
+ 
+
+```python
+# numpy.datetime[ns] type에서 year만 걸러내기
+# temperatures 라는 DataFrame이 있을 때,
+
+# get ["year", "month", "day"] from datetime[ns]
+# 이렇게 뽑아낸 각각의 연월일 dtype은 int64
+temperatures["date"].dt.year() 
+temperatures["date"].dt.month()
+temperatures["date"].dt.day()
+
+# 그럼 애초에 year을 int로 바꿔주면 어떨까? > astype(int)로 변환하기.
+# 뭔가 방법이 있을 것 같은데, 잘 안된다. ㅠㅠ
+
 ```
 
