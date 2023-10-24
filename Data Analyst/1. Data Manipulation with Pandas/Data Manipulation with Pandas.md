@@ -575,3 +575,60 @@ plt.legned(["F", "M"]) # 범주에 이름 붙이기
 plt.show()
 ```
 
+
+
+### 8. Missing values
+
+모든 데이터가 완벽하지 않을 수 있다. 데이터가 누락 된 경우, NaN (Not a Number) 으로 표현되며 아래와 같이 누락 여부를 체크하면서 시작하는것이 좋다.
+
+
+
+#### Detecting missing values
+
+```python
+dogs.isna() # 모든 컬럼에 대해 빈 값이 있는지 True/False로 표시
+dogs.isna().any() # 해당 열에 누락된 값이 있는지만 확인
+```
+
+#### Counting missing values
+
+```python
+dogs.isna().sum()
+```
+
+#### Plotting missing values
+
+```python
+import matplotlib.pyplot as plt
+dogs.isna().sum().plot(kind="bar")
+plt.show()
+```
+
+
+
+이런 식으로, 누락된 값들을 알아냈다면 무엇을 할 수 있을까?
+
+#### 1) Removing missing values
+
+```python
+dogs.dropna()
+```
+
+가장 편한 방법이지만, 누락된 값이 많은 경우 적용할 수 없다.
+
+
+
+#### 2) Replacing missing values
+
+```python
+dogs.fillna(0)
+```
+
+누락된 값을 모두 0으로 채워버리는 방법. 물론 다른 방법들도 많다.
+
+
+
+### More to learn
+
+- Joining Data with Pandas
+- Streamlined Data Ingestion with Pandas
