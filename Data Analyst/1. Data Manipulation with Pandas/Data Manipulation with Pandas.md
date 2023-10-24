@@ -497,3 +497,81 @@ temperatures["date"].dt.day()
 
 ```
 
+
+
+### 7. Visualizing your data
+
+#### Histograms
+
+```python
+import matplotlib.pyplot as plt
+
+dog_pack["height_cm"].hist() # histogram 생성
+plt.show()					 # 시각화 show
+
+# 막대의 수를 조정할 수 있다...?
+dog_pack["height_cm"].hist(bins=20)
+plt.show()
+dog_pack["height_cm"].hist(bins=5
+plt.show()
+```
+
+
+
+#### Bar plots
+
+```python
+avg_weight_by_bread =dog_pack.groupby("breed")["weight_kg"].mean()
+print(avg_weight_by_breed)
+
+avg_weight_by_breed.plot(kind="bar")
+plt.show()
+
+# bar plot으로 title설정
+avg_weight_by_breed.plot(kind="bar", title="Mean Weight by Dog Breed")
+plt.show()
+```
+
+
+
+####  Line plots
+
+```python
+sully.head()
+sullpy.plot(x="date",
+            y="weight_kg",
+            kind="line")
+plt.show()
+```
+
+
+
+#### Rotating axis labels
+
+```python
+# 라벨을 45도 회전시켜주면 더 깔끔하게 표현할 수 있다.
+sully.plot(x="date", y="weight_kg", kind="line", rot=45)
+plt.show()
+```
+
+
+
+#### Scatter plots
+
+```python
+dog_pack.plot(x="height_cm", y="weight_kg", kind="scatter")
+plt.show()
+```
+
+
+
+#### Transparency (반투명)
+
+```python
+# alpha : 불투명도
+dog_pack[dog_pack["sex"]=="F"]["height_cm"].hist(alpha=0.7)
+dog_pack[dog_pack["sex"]=="M"]["height_cm"].hist(alpha=0.7)
+plt.legned(["F", "M"]) # 범주에 이름 붙이기
+plt.show()
+```
+
