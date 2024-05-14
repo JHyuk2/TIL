@@ -1,20 +1,34 @@
 # Today I Learned
 
-### Rule  
-- One day - One commit
 
-### Required Capacity
 
-1. SQL
-2. EDA(Pandas & Seaborn)  
-   - [1. Initialize EDA](https://github.com/JHyuk2/TIL/tree/master/2023/EDA/1.%20Initial%20EDA)
-   - 
-3. ML/DL/RL
+## Programming
+
+#### Python Basics & Pandas
+
+#### Machine Learning
+
+- EDA
+- NLP
+
+#### Deep Learning
+
+- CNN
+
+#### SQL (MySQL)
+
+#### Visualization(Tableau)
 
 ---
 
-### To do list
 
-1. SQL - one solve per day  
-2. Kaggle  
-3. Coursera free lecture | ML
+
+## Others
+
+### Linear Algebra
+
+- [1장 - 벡터, 내적, 정사영](Linear Algebra/1장-벡터,내적,정사영/선형대수1장 - 벡터, 내적, 정사영.md)
+
+### Git
+
+### Markdown
