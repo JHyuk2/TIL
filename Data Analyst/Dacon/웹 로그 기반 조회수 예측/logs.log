@@ -1,0 +1,18 @@
+2024-02-21 14:06:38,163:WARNING:C:\Users\jhuyk\AppData\Local\Temp\ipykernel_10304\2573393712.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  df_train[df_train.groupby('userID').count().sessionID != 1].userID
+
+2024-02-21 14:06:50,163:WARNING:C:\Users\jhuyk\AppData\Local\Temp\ipykernel_10304\372960809.py:1: UserWarning: Boolean Series key will be reindexed to match DataFrame index.
+  df_train[df_train.groupby('userID').count().sessionID != 1]
+
+2024-04-26 14:55:28,473:WARNING:c:\Users\jhuyk\anaconda3\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 52629 (\N{HANGUL SYLLABLE CUG}) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+
+2024-04-26 14:55:28,500:WARNING:c:\Users\jhuyk\anaconda3\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 53580 (\N{HANGUL SYLLABLE TE}) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+
+2024-04-26 14:55:28,500:WARNING:c:\Users\jhuyk\anaconda3\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 49828 (\N{HANGUL SYLLABLE SEU}) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+
+2024-04-26 14:55:28,500:WARNING:c:\Users\jhuyk\anaconda3\lib\site-packages\IPython\core\pylabtools.py:152: UserWarning: Glyph 53944 (\N{HANGUL SYLLABLE TEU}) missing from current font.
+  fig.canvas.print_figure(bytes_io, **kw)
+
