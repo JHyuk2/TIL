@@ -17,7 +17,7 @@
 
 #### SQL (MySQL)
 
-#### Visualization(Tableau)
+#### Visualization Tool(Tableau)
 
 ---
 
