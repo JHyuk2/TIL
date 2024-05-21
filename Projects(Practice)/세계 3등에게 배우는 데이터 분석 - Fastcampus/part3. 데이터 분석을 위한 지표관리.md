@@ -1,22 +1,22 @@
-## 세계 3등에게 배우는 13개 데이터분석 프로젝트
+## Part3. 데이터 분석을 위한 지표관리
 
-1-3. 비즈니스 지표 관리 Framework: AARRR
+### 1-3. 비즈니스 지표 관리 Framework: AARRR
 
-획득 - 활성화 - 매출 - 유지 - 추천
+AARRR은 다음의 다섯 순서의 약자를 의미한다.
 
-act/acquisition - activation - revenue - retention - advocate/ referral
+### 획득 - 활성화 - 매출 - 유지 - 추천
 
+(act/acquisition - activation - revenue - retention - advocate/ referral)
 
-
-5A라고 불리는 유저의 여정 탐색방법도 있음.
+> 5A라고 불리는 유저의 여정 탐색방법도 있다.
 
 결국 유저의 여정은 각각의 단계가 정해져 있고, 우리는 각각의 단계에서 바라봐야 할 지표같은 게 있다.
 
 ex)
 
-시작단계 => CTR, CPM 등..
+시작단계 => CTR(클릭율), CPM, CPA 등..
 
-acquisition => 단계에선  CAC, MAU 등
+acquisition => 단계에선  CAC, MAU, DAU 등...
 
 
 
