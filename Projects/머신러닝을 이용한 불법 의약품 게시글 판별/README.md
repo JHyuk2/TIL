@@ -22,12 +22,15 @@
 
 
 
+### 기여한 부분
+
+- 라벨링은 4명의 팀원이 모두 나눠 약 25,000~27,000건 수작업 분류
+- 전처리 부분과 모델링 중 Naive bayes 부분을 맡아 진행.
 
 
 
-## 1. 전처리
 
-### 	1) 파일 불러오기
+## 1. 파일 불러오기 및 아이디어 제시
 
 <h6> (실제 데이터 예시) </h6>
 
@@ -46,15 +49,17 @@
 5.0  #로렉스 #아이스# 다이아#고씨쥬얼리#명품시계#금#화이트#골드#화이트골드 https...      
 ```
 
-불법 게시글의 특징은 `고의로 사용된 특수문자, 자음 모음이 분리된 오탈자가 많다` 라는 점으로,
+불법 게시글의 특징은 **`고의로 사용된 특수문자, 자음 모음이 분리된 오탈자가 많다`** 라는 점으로,
 
 이를 위한 아이디어로,
 
-##### `다시 하나의 단어들로 합쳐준 후 내용을 판별` 하는 방법을 사용 하고자 하였다.
+##### `한글만 남긴 뒤 자소 분리 후 판별` 하는 방법을 사용 하고자 하였다.
 
 
 
-###  	2) text를 단어별로 구분
+## 2. 전처리
+
+###  	2.1) 띄어쓰기 기준 word 구분
 
 먼저 띄어쓰기를 구분자로 하여, word별로 나누어주었다.
 
@@ -67,8 +72,6 @@ def split_all_sentence(text_data): # type(text_data) => DataFrame
         result.append(temp)
     return result
 ```
-
-
 
 <h6> 결과값 예시</h6>
 
@@ -86,9 +89,9 @@ def split_all_sentence(text_data): # type(text_data) => DataFrame
 
 
 
-### 	3) URL 제거
+### 	2.2) URL 제거
 
-2번에 있는 URL
+이미지나 영상을 첨부한 게시글에서 글자만 남기기 위해 URL을 제거해줬다.
 
 ```python
 #data에 있는 text 데이터에 대해 url 전부 제거
@@ -113,7 +116,7 @@ def remove_url(text_data):
 
 
 
-	### 	4) 특수문자 / 숫자 제거
+### 2.3) 특수문자 및 숫자 제거
 
 ```python
 #특수문자를 모두 제거하는 함수
@@ -129,7 +132,7 @@ def change(otl):
                     if t.isalpha():
                         result_text += t
                     else:
-                        result_text += " " # 사라질 문자는 'space' 로 대체 => 5) 조정 필요
+                        result_text += " " # 사라질 문자는 'space' 로 대체
             result_text += " "
         result.append(result_text)
 ```
@@ -143,8 +146,6 @@ def change(otl):
 > ```
 
 
-
-	### 	5) 띄어쓰기 조정  <20. 01.19 함수화 수정>
 
 -  띄어쓰기가 2칸 이상이면 한칸으로 조정
 
@@ -173,20 +174,20 @@ def trim_spacing_word(changed_text):
 
 
 
-## 2 - 1) Preprocessor - Decompose(import hgtk, MeCab)
+### 2.4) 형태소 분석(MeCab)
 
-- 결과 도출 시 비교군으로 사용 할 것이므로, 각 과정에서 선택적으로 진행한다.
+- 한글 형태소 분석으로, 우리는 특정 형태소만 가져오기로 하였다.
+  - 명사, 고유명사, 동사, 형용사, 어근, `알 수 없음`
 
 
 
-	### 	6) 형태소 추출
 
 ```python
 #길이가 10 이상인 경우, 형태소 분석기로 나눠주는 함수
 import MeCab
 
 # custom_list = ["NNP","NNG","VV","VA","XR", "UNKNOWN"]
-def kimchi(text, custom_list =  ["NNP","NNG","VV","VA","XR", "UNKNOWN"]):
+def ko_tag(text, custom_list =  ["NNP","NNG","VV","VA","XR", "UNKNOWN"]):
     tagger = MeCab.Tagger()
     real = tagger.parse(text)
     separate_text = real.split()
@@ -209,15 +210,23 @@ def kimchi(text, custom_list =  ["NNP","NNG","VV","VA","XR", "UNKNOWN"]):
 
 - <h6> 결과값 예시</h6>
 
-> ```markdown
-> # 	a = remove_url(split_all_sentence(data["Text"]))
->   	print (a)
+> ```python
+> # test = [' 얼음활용법  얼음  아이스  생활꿀팁  경기도경제과학진흥원  GBSA  집에 보관해둔 얼음을 생활 곳곳에서 알뜰하게 활용하는 방법을 ']
 > 
+> print(ko_tag(test))
+> 
+> '''
+> > ['얼음', '활용', '법', '얼음', '아이스', '생활', '꿀', '팁', ',경기도', '경제', '과학진흥원', '집', '보관', '얼음', '생활', '알뜰하','활용', '방법']
+> '''
 > ```
 
 
 
-###  7) 자소 분리 & 한글만 보기
+###  2.5) 자모 분리 & 한글만 보기(hgtk)
+
+- hgtk 는 한글 자모 분리/조합을 위한 툴킷으로, 깃허브에 올라와 있는 것을 사용하였다.
+
+(사용 예시)
 
 ```python
 ## 각 음절에 맞게 자소를 꼴뚜기로 분리해준다.
@@ -231,6 +240,8 @@ print(a)
 print(a.replace("ᴥ",""))
 >> ㅇㅏㅇㅣㅅㅡ
 ```
+
+---
 
 ```python
 ## 함수로 나타냈을 때
@@ -258,26 +269,96 @@ def remove_alpha(text_list):
 
 - <h6> 결과값 예시</h6>
 
-> ```markdown
+> ```python
 > # 	test = ['사람들이 모르는게 good']
-> 	after_decompose = decompose_text(test)
-> 	after_remove = remove_alpha(after_decompose)	# 자소분리
->   	print (after_remove)						   	# 영어제거
->   
-> ['ㅅㅏㄹㅏㅁㄷㅡㄹㅇㅣ ㅁㅗㄹㅡㄴㅡㄴㄱㅔ']
-> ```
-
-
-
-
-
-	### 	4) 입력대기중
-
-- <h6> 결과값 예시</h6>
-
-> ```markdown
-> # 	a = remove_url(split_all_sentence(data["Text"]))
->   	print (a)
 > 
+> after_decompose = decompose_text(test)
+> after_remove = remove_alpha(after_decompose)	# 자소분리
+> print (after_remove)						   	# 영어제거
+> 
+> """ 
+> <result>
+> ['ㅅㅏㄹㅏㅁㄷㅡㄹㅇㅣ ㅁㅗㄹㅡㄴㅡㄴㄱㅔ']
+> """
 > ```
 
+
+
+## 3. 모델링
+
+텍스트 스팸 필터링에서 가장 많이 쓰이는 모델인 Naive bayes, 그리고 분류 성능이 그보다 더 뛰어나다고 알려진 SVM, 그리고 딥러닝 모델인 LSTM을 사용하였다.
+
+
+
+### 3.1) 머신러닝 모델
+
+
+
+#### 3.1.1) TF-IDF
+
+고전적인 자연어 처리 기법으로, 카운트 기반의 문서 단어 행렬을 만들어주는 기법을 사용하였다.
+
+NLP는 대부분 고차원으로 나오기 때문에 최대 10만개의 단어만 사용하기로 하였고, 훈련셋과 학습셋 비율은 8:2로 구분하였다.
+
+```python
+# raw데이터를 훈련-테스트 데이터로 나눈후 , fitting해서 리턴
+def data_transformer(data):
+    Train_X, Test_X, Train_Y, Test_Y = train_test_split(data['Text'],data['Label'],test_size=0.2, random_state = 1)
+    
+    Tfidf_vect = TfidfVectorizer(max_features = 100000)
+    Tfidf_vect.fit(Train_X[:].values.astype('U'))
+
+    Train_X_Tfidf = Tfidf_vect.transform(Train_X[:].values.astype('U'))
+    Test_X_Tfidf = Tfidf_vect.transform(Test_X[:].values.astype('U'))
+
+    Tfidf_vect = TfidfVectorizer(max_features = 100000)
+    Tfidf_vect.fit(Train_X[:].values.astype('U'))
+
+    Train_X_Tfidf = Tfidf_vect.transform(Train_X[:].values.astype('U'))
+    Test_X_Tfidf = Tfidf_vect.transform(Test_X[:].values.astype('U'))
+    
+    return Train_X_Tfidf, Test_X_Tfidf, Train_Y, Test_Y
+```
+
+
+
+#### 3.1.2) Naive bayes
+
+싸이킷 런 모듈에 있는 나이브 베이즈를 사용하였다.
+
+```python
+def learning_MNB(Train_X,Train_Y):
+    Naive = naive_bayes.MultinomialNB()
+    Naive.fit(Train_X,Train_Y)
+    return Naive
+
+def predict_MNB(model,Test_X):
+    predictions_NB = model.predict(Test_X)
+    return predictions_NB
+```
+
++ 그리고 추가로 SVM, LSTM을 사용하였다.
+
+
+
+### 3.2) 앙상블 방법
+
+앙상블(Ensemble)은 단일 모델이 아닌, 여러 개의 모델을 이용하여 함께 예측을 하는 방법이다. 
+
+앙상블 기법은 Voting, Bagging, Boosting, Stacking이 있는데, 그 중에서 우리는 Hard Voting을 사용하였다. (각 모델에게 투표권을 한 장씩 주는 방법.)
+
+
+
+## 4. 실험 결과
+
+성능 지표로 **재현율(Recall - 실제 정답 중에 모델이 정답이라고 판별한 것의 비율)을 사용**하였다.
+
+`Recall`을 사용한 이유는, 무고한 사람들을 최대한 피해가는 것이 중요하다고 생각했기 때문이다.
+
+
+
+<img src="./PrecisionRecall.png" style="float left" width="50%"></img>
+
+
+
+자소분리를 하기 전보다, 자소분리를 함으로써 Recall Score가 모두 올라갔음을 알 수 있었다.
