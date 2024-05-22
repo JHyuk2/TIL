@@ -1,97 +1,76 @@
-# Drug_Tweets_Classifier
-
-- 1) 형태소 분석 o / x
-- 2) 문장 일반화 o / x
+# 머신러닝을 이용한 불법 의약품 판매 게시글 탐지
 
 
 
+### 프로젝트 개요 및 진행 배경
+
+- 전문 의약품을 온라인에서 매매하는 것은 법적으로 금지되어 있지만, 온라인에서 사고파는 게시글을 쉽게 찾아볼 수 있다. 이러한 거래를 막기 위해 여러 시도를 하고 있지만, 일일이 확인하기란 시간이 많이 소요되는 일이며, 비효율적이다.
+
+​	이러한 게시글을 더 빠르고 정확하게 판별하여 불법 거래를 막기 위해 프로젝트를 진행하였다.
+
+
+
+### 데이터 설명
+
+- 사용된 데이터는 트위터 고급검색이 가능한 웹 크롤링 패키지인 twitterscrapper를 이용해 수집하였다.
+
+- 수집된 데이터는`총 106,448 건의 게시글`이며, 4명이서 직접 라벨링 한 결과 
+
+  102,670건의 불법 판매글 /  3,778개의 일반 게시글로 나뉘어졌다.
+
+  - 따라서 데이터 불균형의 문제를 해결하기 위해 해당 클래서의 일부만 사용하는 Random Undersampling 기법을 사용하였다. (불법 판매글 약 5,000개만 사용)
 
 
 
 
 
 
-## 1. 필요한 라이브러리 불러오기 
+## 1. 전처리
 
-```python
-#기본 라이브러리
-import numpy as np
-import pandas as pd
-import matplotlib.pyplot as plt
+### 	1) 파일 불러오기
 
-#전처리부분
-from sklearn.model_selection import train_test_split
-from sklearn.feature_extraction.text import TfidfVectorizer
+<h6> (실제 데이터 예시) </h6>
 
-#모델부분
-from sklearn import naive_bayes, svm
-from sklearn.neighbors import KNeighborsClassifier
+- Label 0: 불법 판매 게시글
 
-#검증부분 - Confusion_Matrix / Preciion and Reall
-from sklearn import metrics
-from sklearn.model_selection import cross_val_predict
-from sklearn.metrics import precision_recall_curve
-from sklearn.metrics import accuracy_score
-from sklearn.metrics import precision_score , recall_score , f1_score
+- Label 1: 일반 게시글
 
-#검증부분 - Cross Validation
-from sklearn.model_selection import cross_val_score #점수 나타내기
+#### 원본파일.head() => (label / text)
+
+```markdown
+(Label)  					(Text)
+1.0  사람들이 잘 모르는데 진짜 유명해졌으면 하는 일본 편의점 음식 #일본 #미니스톱 #...      
+2.0  [#아이스의오락시간] #아이스 의 오락시간 \n과연 누가 아이스의 유연성 왕일지 얼...      
+3.0  오. 오랫만에 #아이스 #돌체라떼 음 맛있겠다 (@ Starbucks in 부산광역...      
+4.0  [맛집탐험대] 나를 놀라게한 커피 "TERAROSA" \n\n#TERAROSA #테...      
+5.0  #로렉스 #아이스# 다이아#고씨쥬얼리#명품시계#금#화이트#골드#화이트골드 https...      
 ```
 
+불법 게시글의 특징은 `고의로 사용된 특수문자, 자음 모음이 분리된 오탈자가 많다` 라는 점으로,
+
+이를 위한 아이디어로,
+
+##### `다시 하나의 단어들로 합쳐준 후 내용을 판별` 하는 방법을 사용 하고자 하였다.
 
 
-## 2. Preprocessor
-
-### 	1) 파일 읽고, text & label 선별 추출
-
-```python
-#파일을 읽고 필요한 정보 데이터만 가져오기
-def read_file(file):
-    data = pd.read_excel(file)
-    text = data["text"]
-    label = data['label']
-    new_data = pd.DataFrame({"Text" : text,"Label" : label})
-    return new_data
-```
-
-- <h6> 결과값 예시</h6>
-
-> ```markdown
-> #   data = read_file("data_sample.xlsx")
->   	print(data.head())
-> 
-> (Label)  					(Text)
-> 1.0  사람들이 잘 모르는데 진짜 유명해졌으면 하는 일본 편의점 음식 #일본 #미니스톱 #...      
-> 2.0  [#아이스의오락시간] #아이스 의 오락시간 \n과연 누가 아이스의 유연성 왕일지 얼...      
-> 3.0  오. 오랫만에 #아이스 #돌체라떼 음 맛있겠다 (@ Starbucks in 부산광역...      
-> 4.0  [맛집탐험대] 나를 놀라게한 커피 "TERAROSA" \n\n#TERAROSA #테...      
-> 5.0  #로렉스 #아이스# 다이아#고씨쥬얼리#명품시계#금#화이트#골드#화이트골드 https...      
-> 
-> ```
-
-###  	
 
 ###  	2) text를 단어별로 구분
 
-```python
+먼저 띄어쓰기를 구분자로 하여, word별로 나누어주었다.
+
+```=python
 def split_all_sentence(text_data): # type(text_data) => DataFrame
     result = []
     count = 0
-    for idx,text in enumerate(list(text_data)): # 수정 예정
-        temp = text.split(sep = " ")
+    for text in list(text_data):
+        temp = text.split(sep=" ")
         result.append(temp)
     return result
 ```
 
-- 코드 작성시 다음과 같이 바꿀 예정
 
-  ~~for idx,text in enumerate(list(text_data)):~~
 
-  **for text in list(text_data)**
-
-  
-
-- <h6> 결과값 예시</h6>
+<h6> 결과값 예시</h6>
 
 > ```markdown
 > # print(split_all_sentence(data["Text"][:2]))
@@ -108,6 +87,8 @@ def split_all_sentence(text_data): # type(text_data) => DataFrame
 
 
 ### 	3) URL 제거
+
+2번에 있는 URL
 
 ```python
 #data에 있는 text 데이터에 대해 url 전부 제거
@@ -292,10 +273,6 @@ def remove_alpha(text_list):
 
 	### 	4) 입력대기중
 
-```python
-
-```
-
 - <h6> 결과값 예시</h6>
 
 > ```markdown
@@ -304,10 +281,3 @@ def remove_alpha(text_list):
 > 
 > ```
 
-# 기타
-
-은전한닢 프로젝트 구글 그룹스.
-
-도움이 되는 정보들 찾아보면 있을지도?
-
-https://groups.google.com/forum/#!topic/eunjeon/aNvCS72rloI
