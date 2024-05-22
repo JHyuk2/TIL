@@ -357,7 +357,7 @@ def predict_MNB(model,Test_X):
 
 
 
-<img src="./PrecisionRecall.png" style="float left" width="50%"></img>
+<img src="./asset/PrecisionRecall.png" style="float left" width="50%"></img>
 
 
 
