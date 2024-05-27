@@ -61,7 +61,7 @@
 
   ### 5) Padding practice:
 
-  ![image-20200305175329118](../capture/CNN_padding.png)
+  ![image-20200305175329118](../../assets/CNN_padding.png)
 
   - Convolution Layer을 실행시켜도 같은 사이즈의 이미지가 나옴.
 
@@ -98,6 +98,6 @@
   
   ### 7) Convolution layers
   
-  ![image-20200305180920310](../capture/CNN_Filter_layers.png)
+  ![image-20200305180920310](../../assets/CNN_Filter_layers.png)
   
   

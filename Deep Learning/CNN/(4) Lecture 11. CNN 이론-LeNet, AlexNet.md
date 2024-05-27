@@ -6,7 +6,7 @@
 - Function - Function - Function .... 딥한 층을 이룸
 - 여러 신경망들이 Fully connected된 상태로  값을 도출해낼 수 있다.
 
-![image-20200308112113935](../capture/dnn_layers.png)
+![image-20200308112113935](../../assets/dnn_layers.png)
 
 ### 순서대로 따라가보자
 
@@ -36,7 +36,7 @@
 - 3) 2개의 Fully-Connected Layer,
 - 4) 1개의 최종 출력 Layer로 이루어져 있다.
 
-![image](../capture/CNN_LeNet-5.jpg)
+![image](../../assets/CNN_LeNet-5.jpg)
 
 
 
