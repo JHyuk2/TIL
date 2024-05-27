@@ -311,5 +311,276 @@ splits[1]: torch.Size([6, 3])s
 
 ### 4.1. gather
 
+gather() 함수는 텐서 내의 데이터를 인덱스에 따라 모으는 연산이다.  
+
+```python
+y = torch.tensor([[1, 2], [3, 4]])
+gather_index = torch.tensor([[0, 0], [1, 0]])
+gathered = y.gather(1, gather_index) # 지정된 인덱스에서 값을 수집
+
+"""
+tensor([
+	[1, 2],
+	[4, 3],
+])
+"""
+```
+
+> **gather()** 함수는 처음 보면 생각보다 헷갈릴 수 있는데...
+>
+> 말 그대로 특정 차원에서의 원소를 쉽게 가져오기 위해 사용하는 함수일 뿐이다.
+>
+> 다만 특정 차원에서의 계산을 이루기 때문에 dim을 입력하지 않으면 런타임 에러가 난다.
+>
+> 
+>
+> gather의 사용을 조금 더 많이 해보자.
+
+```python
+y = torch.arange(2*3*4).reshape(2,3,4)
+# gather index는 함수를 수행하고자 하는 텐서와 같은 차원이어야 하기 때문에,
+# 3차원 텐서로 구성하며, 가져오고 싶은 인덱스를 정확히 입력해야 한다.
+gather_index = torch.tensor([[[0, 0, 0], [0, 0, 1], [0, 1, 0]]]) # (1, 3, 3)
+
+# gather는 사실 다음과 같은 함수이다.
+gathered = torch.tensor(y, dim=1, gather_index)
+
+"""
+> print(y) 
+tensor([[[ 0,  1,  2,  3],
+         [ 4,  5,  6,  7],
+         [ 8,  9, 10, 11]],
+
+        [[12, 13, 14, 15],
+         [16, 17, 18, 19],
+         [20, 21, 22, 23]]])
+
+> print(gathered) # dim=0
+tensor([[[ 0,  1,  2],
+         [ 4, 17,  6],
+         [20,  9, 10]]])
+
+> print(gathered) # dim=1
+tensor([[[0, 1, 2],
+         [0, 5, 2],
+         [4, 1, 2]]])
+         
+> print(gathered) # dim=2
+tensor([[[0, 0, 0], # 가장 안쪽 차원에서 0번째만 선택
+         [4, 5, 4], # 가장 안쪽 차원이지만, 이미 1칸 이동. 해서 0, 1, 0
+         [9, 8, 8]]])
+"""
+```
+
+- dim은 필수 arguement이다. (사용하지 않으면 런타임 에러 발생)
+
+- dim=0에서의 수행은 어떻게 연산되는 걸까?
+
+  - 원본 텐서 y는 dim=0에서 (3 x 4) tensor 두 개로 구성된다.
+
+  - output의 텐서 내 좌표를 통해 보면 더욱 쉽게 알 수 있다.
+
+  - gathered 의 차원은 index 차원과 같은 (1, 3, 3)
+
+    - 수집된 텐서 각각의 좌표는 다음과 같다.
+
+      [0, 1, 2,] =  [(0, 0, 0), (0, 0, 1), (0, 0, 2)] 
+
+      [4, 17, 6] = [(0, 1, 0), (1, 1, 1), (0, 1, 2)]  -- 가운데 인덱스를 (0, 1, 0)으로 준 결과
+
+      [20, 9, 10] = [(1, 2, 0), (0, 2, 1), (0, 2, 2)] -- 마지막 인덱스를 (1, 0, 0)으로 준 결과.
+
+  - 이 결과를 보고 다시 우리가 썼던 인덱스를 되돌아보자.
+
+    ```python
+    gather_index = torch.tensor([[[0, 0, 0], [0, 0, 1], [0, 1, 0]]])
+    ```
+
+    - 우리는 1 x 3 x 3 모양의 텐서를 뽑을 것이다.
+
+    - 대신 dim=0에서 이루어지기 때문에 component에 들어갈 수 있는 최대 숫자는 1
+
+      왜냐면 dim=0의 사이즈가 2이기 때문에 0 or 1만 가능
+
+    - 다른 차원에서도 마찬가지이다. dim=1에서는 2 * 3 * 4이기 때문에 2이하의 숫자만 가능
 
 
+
+> 본인은 n차원에 있는 어떤 텐서를 n x m으로 뽑고 싶은데, 그걸 일정한 패턴으로 뽑게 해주는 방법이라고 생각한다.
+>
+> 그냥 indexing, slicing의 한 종류 비슷하게 느껴지는데, 직관적으로 쓰기까진 시간이 좀 걸릴 것 같다.
+
+
+
+
+
+### 4.2. masked_select
+
+True False를 이용해서 텐서를 추출하는 방법인데, 이건 다른 마스킹 기법과 같기에 패스
+
+
+
+### 4.3. 정수 배열을 이용한 인덱싱
+
+[rows, cols]를 이용한 방법이다. 설명과 같이 인덱싱의 한 기법이다.
+
+```python
+tensor = torch.tensor([1,2,3,], [4,5,6], [7,8,9])
+
+rows = torch.tensor([0, 2])
+cols = torch.tensor([1, 2])
+
+# indexing
+selected_by_index = tensor([rows, cols]) # tensor([[0, 2], [1, 2]])
+
+"""
+result: > tensor([2, 9])
+"""
+```
+
+tensor로 받은 rows, cols를 사용해서, 새로운 인덱스를 만들어낸다.
+
+원래 2의 자리 index값은 [0, 1], 9의 index는 [2, 2]이다.
+
+>  [0, 2], [1, 2] 를 zip함수로 둘씩 이어준 형태와 거의 유사하다.
+>
+> 지금까지 활용한 걸 토대로 만들어보자면, 아래와 같이 인덱스를 조정해 준 후 호출한 것이라 볼 수 있다.
+
+```python
+print(list((zip(rows, cols))))
+
+"""
+> result
+  [(tensor(0), tensor(1)), (tensor(2), tensor(2))]
+"""
+```
+
+
+
+## 5. 텐서와 넘파이 간의 변환
+
+한 번 보고 넘어갈 수 있을 정도로 직관적이고 쉽다.
+
+
+
+### 5.1. 넘파이 배열을 텐서로 변환
+
+```python
+import numpy as np
+
+numpy_array = np.array([1,2,3,4,5])
+
+# numpy to tensor
+tensor_from_numpy = torch.from_numpy(numpy_array)
+```
+
+텐서는 데이터의 원천을 중요시하나보다. from을 사용한다.
+
+
+
+### 5.2. 텐서를 넘파이 배열로 변환
+
+더 쉽다.
+
+```python
+tensor = torch.tensor([1,2,3,4,5])
+
+# tensor to numpy
+numpy_from_tensor = tensor.numpy()
+```
+
+> 얘는 왜 그냥 type casting이 되지?
+>
+> 둘 사이의 상호작용이 잘 된다면 굳이 from_numpy() 와 같은 함수를 사용하지 않아도 되지 않을까?
+>
+> 도대체 무슨 차이가 있을까
+
+
+
+#### 5.2 번외) numpy에서 tensor로의 변환 비교
+
+```python
+# numpy로 변환한 tensor를 다시 tensor로 변환
+print(torch.tensor(numpy_from_tensor))
+
+# 처음부터 numpy object였던 array를 tensor로 변환
+print(torch.tensor(numpy_array))
+
+# 결과 비교까지 해보자
+print(tensor == torch.tensor(numpy_array))
+
+"""
+tensor([1, 2, 3, 4, 5])
+tensor([1, 2, 3, 4, 5])
+tensor([True, True, True, True, True])
+"""
+```
+
+일단 결과만 놓고 보자면 차이가 없다. 그러면 시간으로 비교했을 땐 어떨까?
+
+#### 시행 1) torch.from_numpy 사용
+
+```python
+# 100회 반복을 기준으로 10회 시행
+%%timeit -n 100 -r 10
+
+numpy_array = np.array([1, 2, 3, 4, 5])
+tensor_from_numpy = torch.from_numpy(numpy_array)
+
+"""
+3.39 µs ± 1.8 µs per loop (mean ± std. dev. of 10 runs, 100 loops each)
+"""
+```
+
+#### 시행 2) torch.tensor(numpy_array) 
+
+```python
+%%timeit -n 100 -r 10
+
+numpy_array = np.array([1, 2, 3, 4, 5])
+tensor_from_numpy = torch.tensor(numpy_array)
+
+"""
+8.7 µs ± 3.51 µs per loop (mean ± std. dev. of 10 runs, 100 loops each)
+"""
+```
+
+#### 결론 => 약 2배 가까운 속도 차이로, 대용량 데이터를 다룰 경우엔 유의미한 차이가 있을...까? 모르겠다.
+
+
+
+## 6. 텐서 복제
+
+**tensor.clone()** 함수로, 독립적인 메모리를 확보할 때 사용하는 `Deep copy` 와 닮았다고 할 수 있다.
+
+> Deep copy  vs  Shallow copy
+>
+> - shallow copy 는 인스턴스에 메모리가 새로 생성되는 것이 아니라, 같은 주소값을 복사하여 같은 메모리를 가르키기 때문에, 
+>
+>   만약 a1의 값을 shallow copy한 a2를 수정하면 a1에서도 값이 수정되는 경험을 할 수 있다.
+>
+>   (리스트를 그냥 복사해서 쓰면 shallow copy를 경험 할 수 있다.)
+
+```python
+# 원본 텐서 생성
+original_tensor = torch.tensor([1, 2, 3, 4, 5], dtype=torch.float32)
+print("텐서 원본:", original_tensor)
+
+# 텐서 복제
+cloned_tensor = original_tensor.clone()
+
+# 원본 텐서 확인 (원본 텐서는 변경되지 않음)
+print("텐서 원본 확인:", id(original_tensor))
+
+# 복제된 텐서 수정
+print("수정된 텐서:", id(cloned_tensor))
+
+cloned_tensor[0] = 10
+print("복제된 텐서:", cloned_tensor == original_tensor)
+
+"""
+텐서 원본 확인: 126282334133552
+수정된 텐서: 126282334133744
+복제된 텐서: tensor([False,  True,  True,  True,  True])
+"""
+```
