@@ -13,9 +13,11 @@
 
 #### Deep Learning
 
-- [Backpropagation](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/Backpropagation.md)
+- [Pytorch - Backpropagation](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/Pytorch%20-%20Backpropagation.md)
 
-- [Pytorch -tensor transformation](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/pytorch_tensor_transformation.md)
+- [Pytorch -tensor transformation](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/Pytorch%20-%20tensor_transformation.md)
+
+- [Pytorch - Linear Algebra in python](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/Pytorch%20-%20Linear_Algebra_in_python.md)
 
 - CNN
   - [What is CNN?](https://github.com/JHyuk2/TIL/blob/master/Deep%20Learning/CNN/(1)%20Lecture%2011.%20CNN%20%EC%9D%B4%ED%95%B4%ED%95%98%EA%B8%B0.md)
