@@ -17,6 +17,8 @@ where length(content) > 15
 
 
 
+
+
 ## Basic Joins
 
 #### Medium
@@ -50,4 +52,39 @@ group by s.user_id
 ```
 
 
+
+## Subqueries
+
+
+
+#### Medium
+
+- [Friend Requests II: Who Has the Most Friends](https://leetcode.com/problems/friend-requests-ii-who-has-the-most-friends/description/?envType=study-plan-v2&envId=top-sql-50)
+
+```mysql
+# 가장 많은 친구를 가진 사람이 누구인지를 뽑기 위함.
+# 요청을 가장 많이 한 사람 + 요청을 가장 많이 받은 사람 내림차순으로 정렬하기
+
+# 1) 친구에게 요청을 가장 많이 한 사람.
+select requester_id as id,
+    (select count(*) 
+    from RequestAccepted  
+    where requester_id = id or accepter_id = id) as num    
+from RequestAccepted
+group by requester_id 
+
+union 
+ 
+# 2) 가장 많은 요청을 받은 사람.
+select accepter_id as id,
+    (select count(*) 
+     from RequestAccepted  
+     where requester_id = id or accepter_id = id) as num
+from RequestAccepted
+group by accepter_id
+
+# 3) 둘을 내림차순으로 정렬 후 1명만 뽑기.
+order by num desc
+limit 1; 
+```
 
