@@ -89,3 +89,25 @@ order by num desc
 limit 1; 
 ```
 
+
+
+> 다른 사람의 코드를 보니, 훨씬 더 복잡도를 줄일 수 있는 방법이 있었다...
+
+#### Complexity
+
+- Time complexity
+
+- Space complexity
+
+```mysql
+# Write your MySQL query statement below
+with base as(select requester_id id from RequestAccepted
+union all
+select accepter_id id from RequestAccepted)
+
+
+select id, count(*) num  from base group by 1 order by 2 desc limit 1
+```
+
+> 그냥 다 더해버리면 그만이니까. 이런 방법도 있다.
+
