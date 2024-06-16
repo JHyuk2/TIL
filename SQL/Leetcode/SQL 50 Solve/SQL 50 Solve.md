@@ -55,6 +55,24 @@ group by s.user_id
 
 ## Subqueries
 
+#### Easy
+
+- [Employees Whose Manager Left the Company](https://leetcode.com/problems/employees-whose-manager-left-the-company/description/?envType=study-plan-v2&envId=top-sql-50)
+
+```mysql
+# 말 그대로, Manager id에는 남아있지만, employee_id에는 없는 직원을 찾는코다.
+select employee_id
+from Employees
+where manager_id not in (
+    select employee_id
+    from Employees
+) and salary < 30000
+order by employee_id asc;
+
+## GPT를 통해 조건문을 조금 수정하자면 where절에 다음 한 줄을 넣어주는 게 좋다.
+and manager_id is not NULL
+```
+
 
 
 #### Medium
