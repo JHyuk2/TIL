@@ -319,14 +319,21 @@ Agent = GemmaAgent()
 
 
 
-
-
-
+- ##### `_start_session` 메서드 : 세션 시작 
 
 ```python
     def _start_session(self, obs: dict):
         raise NotImplementedError
+```
 
+- 세션을 시작하는 메서드로, 구체적인 구현은 서브클래스에서 제공되어야 한다.
+  - `NotImplementedError`를 발생시켜 서브클래스에서 구현해야 함을 명시!
+
+
+
+- ##### `_call_llm` 메서드: 언어 모델 호출
+
+```python
     def _call_llm(self, prompt, max_new_tokens=32, **sampler_kwargs):
         if sampler_kwargs is None:
             sampler_kwargs = {
@@ -341,7 +348,21 @@ Agent = GemmaAgent()
             **sampler_kwargs,
         )
         return response
+```
 
+- LLM 언어 모델을 호출하는 메서드이다.
+
+  > - `prompt`, `max_new_tokens` 및 기타 샘플러 매개변수를 받는다.
+  >
+  > - `sampler_kwargs`(=하이퍼 파라미터)가 제공되지 않으면 기본 값을 설정한다.
+  > - 모델의 `generate` 메서드를 호출하여 응답을 제공한다.
+  > - 생성된 응답을 반환한다.
+
+
+
+- ##### `_parse_keyword` 메서드 : 키워드 파싱
+
+```python
     def _parse_keyword(self, response: str):
         match = re.search(r"(?<=\*\*)([^*]+)(?=\*\*)", response)
         if match is None:
@@ -349,6 +370,45 @@ Agent = GemmaAgent()
         else:
             keyword = match.group().lower()
         return keyword
+```
+
+- 정규 표현식을 사용하여 두 개의 응답(`**`) 사이에서 텍스트를 찾는 메서드이다.
+
+  - 매치가 없으면 빈 문자열을 반환하고, 매치가 있으면 키워드를 소문자로 변환하여 전달한다.
+
+  > **정규표현식**
+  >
+  > ```python
+  > r"(?<=\*\*)([^*]+)(?=\*\*)"
+  > ```
+  >
+  > 이 정규표현식은 두 개의 별표(`**`)로 둘러싸인 단어를 찾는 데 사용된다.
+  >
+  > - `r`: 문자열 앞에 붙는 `r`은 `raw string`의 약자로, 이스케이프 문자를 무시하고 백슬래시(`\`)를 일반 문자로 처리한다.
+  > - `(?<=\*\*)` : 긍정형 후방탐색(Positive Lookbehind). `**` 가 앞에 있는 단어를 찾는다.
+  >   - `(?<= ...`) : `...` 부분이 앞에 있어야 함을 의미
+  >   - `\*` : 정규표현식에서 문자 그대로를 인식하기 위해 이스케이프 문자(백슬래시)로 사용해야 한다.
+  > - `([^*]+`) : 별표가 아닌 하나 이상의 문자.
+  >   - [`^ ...]` : 대괄호 안의 `^`는 부정을 의미한다. 여기서는 별표(`*`)를 제외한 모든 문자를 의미한다.
+  >   - `+` : 앞의 패턴이 한 번 이상 반복됨을 의미한다.
+  > - `(?=\*\*)` : 긍정형 전방탐색(Positive Lookahead). `**` 가 뒤에 있는 부분을 찾는다.
+  >   - `(?= ...)` : `...` 부분이 뒤에 있어야 함을 의미한다.
+  >
+  > ```python
+  > # Regex example
+  > response = "The keyword is **example** in this sentence."
+  > match = re.search(r"(?<=\*\*)([^*]+)(?=\*\*)", response)
+  > if match:
+  >     keyword = match.group()
+  >     print(keyword)  # 출력: example
+  > ```
+
+
+
+
+
+```python
+
 
     def _parse_response(self, response: str, obs: dict):
         raise NotImplementedError
