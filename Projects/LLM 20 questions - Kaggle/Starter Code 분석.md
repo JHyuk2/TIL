@@ -2,7 +2,7 @@
 
 
 
-
+## 1. 환경 설정
 
 ### 1) 환경 설정 - Bash
 
@@ -40,7 +40,7 @@ mv <file dir> <target dir>: file dir에 있는 모든 것(*)을 target dir로 �
 
 
 
-### 2) 환경 설정 - 코드 작성
+### 2) 환경 설정 - 모듈 임포트
 
 ```python
 %%writefile submission/main.py # submission/main.py라는 파일로 코드를 작성함을 의미
@@ -53,21 +53,22 @@ import sys
 # submission path
 KAGGLE_AGENT_PATH = "kaggle_siumlations/agent/" 
 
-# 
 if os.path.exists(KAGGLE_AGENT_PATH):
     sys.path.insert(0, os.path.join(KAGGLE_AGENT_PATH, 'lib'))
 else:
     sys.path.insert(0, "/kaggle/working/submission/lib")
 ```
 
- `KAGGLE_AGENT_PATH` 경로가 존재하는지 확인하고, 존재하면 해당 경로의 `lib` 폴더를 파이썬 모듈 검색 경로에 추가합니다. 만약 해당 경로가 존재하지 않는다면, `/kaggle/working/submission/lib` 경로를 모듈 검색 경로에 추가합니다. 이는 특정 라이브러리를 우선적으로 로드하기 위한 설정입니다.
+>  `KAGGLE_AGENT_PATH` 경로가 존재하는지 확인하고, 존재하면 해당 경로의 `lib` 폴더를 파이썬 모듈 검색 경로에 추가한다. 
+>
+> 만약 해당 경로가 존재하지 않는다면, `/kaggle/working/submission/lib` 경로를 모듈 검색 경로에 추가한다. (특정 라이브러리를 우선적으로 불러오기 위함)
 
 
 
-### 3) 환경 설정 - 라이브러리 불러오기
+### 3) 환경 설정 - 모듈(라이브러리) 임포트
 
 ```python
-# 왜 os, sys가 두 번이나 쓰였는지는 잘 모르겠다.
+# os, sys가 두 번이나 쓰였는지는 잘 모르겠다... 왜일까?
 import contextlib
 import os
 import sys
@@ -77,6 +78,7 @@ import torch
 from gemma.config import get_config_for_7b, get_config_for_2b
 from gemma.model import GemmaForCausalLM
 
+# 이미 저장된 에이전트(7b)를 사용하기 위함인 것 같다.
 if os.path.exists(KAGGLE_AGENT_PATH):
     WEIGHTS_PATH = os.path.join(KAGGLE_AGENT_PATH, "gemma/pytorch/7b-it-quant/2")
 else:
@@ -173,16 +175,17 @@ class GemmaFormatter:
 
 
 
+## 2. main.py
+
+물론, 환경설정부터 main.py에 작성되지만, 여기는 실제 작동을 위한 코드라고 보면 된다.
 
 
 
-
-
+#### 1) 데코레이터와 컨텍스트 매니저
 
 ```python
 # Agent Definitions
 import re
-
 
 @contextlib.contextmanager
 def _set_default_tensor_type(dtype: torch.dtype):
@@ -190,8 +193,52 @@ def _set_default_tensor_type(dtype: torch.dtype):
     torch.set_default_dtype(dtype)
     yield
     torch.set_default_dtype(torch.float)
+```
 
 
+
+- ##### 한 줄씩 천천히 살펴보자.
+
+```markdown
+`import re` : 정규 표현식(Regural Expression)을 사용하기 위한 모듈 임포트
+
+`@Contextlib.contextmanager` : 
+- 데코레이터: 함수를 감싸서 추가적인 동작을 부여하는 함수
+- 컨텍스트 매니저: `with`문과 함께 사용되면 특정 코드 블록의 시작과 끝에서 작업을 수행할 수 있도록 도와주는 객체
+> 데코레이터는 나중에 조금 더 살펴보자.
+
+`torch.set_defalut_dtype(dtype) ~ (torch.float)` : 컨텍스트 매니저가 기본 텐서 타입을 일시적으로 변경하고, 컨텍스트 블록이 끝난 이후에는 원래의 데이터 타입(torch.float)로 되돌리는 것을 의미한다.
+```
+
+- ##### 사용 예시
+
+```python
+with _set_default_tensor_type(torch.double):
+    # 여기서 작성된 모든 텐서는 기본적으로 torch.double 타입을 사용한다.
+    tensor = torch.tensor([1.0, 2.0, 3.0])
+    print(tensor.dtype) # 출력 : torch.float64 (=torch.double, 64비트 부동 소수점 숫자)
+    
+# 컨텍스트 블록(with문)이 끝난 후 기본 dtype은 모두 float로 돌아간다. 
+tensor = torch.tensor([1.0, 2.0, 3.0])
+print(tensor.dtype) # 출력 : torch.float32 (= torch.float, 32비트 부동 소수점 숫자)
+```
+
+- ##### 왜 이렇게 사용하는가?
+
+> 1. 정밀도 관리
+>    - `torch.double`은 높은 정밀도를 제공하지만, 더 많은 메모리를 사용하고 계산 속도가 느려질 수 있다. 따라서 필요할 때만 double을 사용하는 것이 더 효율적이다.
+> 2. 코드 가독성
+>    - 컨텍스트 매니저를 사용하면, 코드의 특정 부분에서만 데이터 타입이 변경된다는 것을 명시할 수 있게 된다!
+>
+> 
+>
+> 즉, 특정 연산에서 더 높은 정밀도를 확보할 수 있으며, 코드의 다른 부분에 영향을 주지 않고 데이터 타입을 관리할 수 있기 때문에 데코레이터로 사용하게 되는 것이다.
+
+
+
+#### 2) Gemma Agent
+
+```python
 class GemmaAgent:
     def __init__(self, variant='7b-it-quant', device='cuda:0', system_prompt=None, few_shot_examples=None):
         self._variant = variant
@@ -208,15 +255,75 @@ class GemmaAgent:
             ckpt_path = os.path.join(WEIGHTS_PATH , f'gemma-{variant}.ckpt')
             model.load_weights(ckpt_path)
             self.model = model.to(self._device).eval()
+```
 
-    def __call__(self, obs, *args):
+
+
+- ##### `__init__` 메서드 : 클래스 정의 및 초기화
+
+```markdown
+#### 1) `__init__` : 객체 생성과 함께 자동으로 호출되는 메서드
+- `variant`, `device`, `system_prompt`, `few_shot_examples` 인자를 입력받아서 실행
+- `self._variant`, `self._device`는 클래스의 '인스턴스 변수'로서 저장
+- `GemmaFormatter` 객체를 생성하여 `self.formatter`에 저장한다.
+
+> 변수명에 `_`를 붙이는 관례  
+> 1. 단일 언더바(`_`)
+> - 해당 속성이나 메서드가 **내부 사용용** 임을 암시한다.
+> - 실제로 접근을 막지는 않지만, 해당 속성이나 메서드가 클래스 외부에서 직접 접근하면 안 된다는 신호
+> 2. 이중 언더바(`__`) <`name mangling`>
+> 클래스 정의 내부에서 변수명을 고유하게 만들어 서브클래스에서 `같은 이름의 변수가 충돌하는 것을 방지`
+
+#### 2) `model_config` : 모델 초기화
+- `get_config_for_2b()` or `get_config_for_7b()` 함수를 호출하여 모델 설정을 가져온다.
+- 토크나이저 경로와 양자화(quant)여부를 결정.
+
+#### 3) `with`문 : 컨텍스트 매니저를 통한 인스턴스 모델 생성
+- 데이터 타입을 설정한 후 모델을 초기화
+- 체크포인트로부터 가중치 로드
+- 모델을 지정된 장치(`cuda:0`) 로 이동시키고, 평가 모드(`eval()`)로 설정한다.
+```
+
+- ##### 사용 예시
+
+```python
+# 객체 생성 (__init__ 호출)
+Agent = GemmaAgent() 
+```
+
+
+
+- ##### `__call__` 메서드 : 클래스 호출
+
+```python
+	def __call__(self, obs, *args):
         self._start_session(obs)
         prompt = str(self.formatter)
         response = self._call_llm(prompt)
         response = self._parse_response(response, obs)
         print(f"{response=}")
         return response
+```
 
+- `__call__` 메서드 : 객체가 호출될 때 실행
+
+  > `obs`와 추가 인자를 받는다.
+  >
+  > `_start_session`메서드를 호출하여 세션을 실행한다.
+  >
+  > `formatter` 객체를 문자열로 변환하여 prompt 생성
+  >
+  > `_call_llm` 메서드를 호출하여 언어 모델의 응답 받기.
+  >
+  > `_parse_response` 메서드를 호출하여 응답을 파싱
+
+
+
+
+
+
+
+```python
     def _start_session(self, obs: dict):
         raise NotImplementedError
 
@@ -245,14 +352,33 @@ class GemmaAgent:
 
     def _parse_response(self, response: str, obs: dict):
         raise NotImplementedError
+        
+        
+    def interleave_unequal(x, y):
+        return [
+            item for pair in itertools.zip_longest(x, y) for item in pair if item is not None
+        ]
+```
 
 
-def interleave_unequal(x, y):
-    return [
-        item for pair in itertools.zip_longest(x, y) for item in pair if item is not None
-    ]
 
 
+
+```markdown
+
+```
+
+
+
+
+
+
+
+
+
+
+
+```python
 class GemmaQuestionerAgent(GemmaAgent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
