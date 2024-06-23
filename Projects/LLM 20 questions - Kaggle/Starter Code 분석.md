@@ -536,3 +536,32 @@ def agent_fn(obs, cfg):
         return response
 ```
 
+LLM learning/Fine tuning(`Few shot learning`)에 대한 이해가 조금 더 필요할 거 같다.
+
+
+
+
+
+---
+
+### RAG pipeline
+
+Query Expansion - Retrieval - Reranker - Passage Filter - Passage compressor - Prompt maker - Generator(LLM)
+
+- 어떻게 답변을 내놓는지에 대한 이해가 필요할 것 같다.
+- langchain? huggingface?
+
+
+
+
+
+박결님 아이디어 // decision tree의 entropy 개념을 활용하면 '질문'에 대한 평가도 가능하지 않을까?
+
++ 단어마다 vector값 계산(cosine sim)을 통해 가까운 카테고리를 구축한 후, feature를 골라내는 방법은...?
+
+수용님 아이디어 // 데이터셋을 구축해서 시나리오를 짜보는 것도 가능할 것 같다.
+
+> 일단 학습 데이터셋에서 수작업으로 category를 추가하고 나눠보는건...?
+>
+> example. 
+
