@@ -88,78 +88,81 @@ else:
 
 
 
-### 4) class GemmaFormatter
+## 2. 데이터 포멧팅 클래스 정의
+
+- 대화의 형식을 관리하고, 각 턴이 돌아왔을 때 기록을 초기화하는 기능을 제공한다.
+
+
+
+### 1) class GemmaFormatter
 
 ```python
 class GemmaFormatter:
-    # 중요한 단어(대화의 시작과 끝을 알려주는 기호)
+    # 대화의 각 턴은 아래의 <시작>과 <끝> 토큰들로 감싸진다. 
     _start_token = '<start_of_turn>'
     _end_token = '<end_of_turn>'
 
-    # 
+    # 초기화
     def __init__(self, system_prompt: str = None, few_shot_examples: Iterable = None):
-        self._system_prompt = system_prompt # 대화의 시작에 나타나는 첫 번째 메시지
-        self._few_shot_examples = few_shot_examples # few shot learning sample
-        
-        # 사용자가 말할 때의 형식 정의
-        self._turn_user = f"{self._start_token}user\n{{}}{self._end_token}\n" 
-        # 모델(컴퓨터)이 말할 때의 형식 정의
-        self._turn_model = f"{self._start_token}model\n{{}}{self._end_token}\n"
-        self.reset() # 대화 상태 초기화 (아래에 reset 함수를 먼저 보고 돌아오자.)
+        self._system_prompt = system_prompt # 초기 대화 시작 시 사용할 시스템 프롬프트이다.
+        self._few_shot_examples = few_shot_examples # 몇 가지 예시 대화를 포함하는 리스트이다.
+        self._turn_user = f"{self._start_token}user\n{{}}{self._end_token}\n"    # 사용자가 말할 때의 형식 정의
+        self._turn_model = f"{self._start_token}model\n{{}}{self._end_token}\n"  # 모델(컴퓨터)이 말할 때의 형식 정의
+        self.reset() # 메서드를 호출하여 초기 상태로 설정.
+        # self.reset() 메서드는 프롬프트 내용을 초기화하고 턴을 지정해주는 역할을 한다.
 
-    
+    # 객체를 문자열로 표현하는 매직매서드로, 현재 대화 상태를 반환해준다.
     def __repr__(self):
         return self._state
 
-    # 사용자와 모델함수 // 사용자가 말할 때와 모델이 말할 때 각각 호출된다.
-
-    # 사용자가 말한 내용을 대화 상태에 추가
+    # 사용자의 턴 추가해주는 메서드, 
     def user(self, prompt):
         self._state += self._turn_user.format(prompt)
         return self
+    
 	# 모델이 말한 내용을 대화 상태에 추가.
     def model(self, prompt):
         self._state += self._turn_model.format(prompt)
         return self
 
     ## 대화 시작과 끝 함수.
-    # 사용자의 대화 시작
+    # 사용자의 턴 시작
     def start_user_turn(self): 
         self._state += f"{self._start_token}user\n"
         return self
-	# 모델의 대화 시작
+
+    # 모델의 턴 시작
     def start_model_turn(self):
         self._state += f"{self._start_token}model\n"
         return self
-	# 대화 끝
+
+    # 턴 종료 메서드
     def end_turn(self):
         self._state += f"{self._end_token}\n"
         return self
 
-    # 리셋 함수 // 대화 상태를 초기화하는 함수
+    # 대화 상태를 초기화하는 함수
     def reset(self):
-        self._state = "" # 대화 내용을 저장하는 변수
+        self._state = "" # 대화 내용을 빈 문자열로 리셋
         
-        # 만약 시스템 프롬프트가 있으면, 그것을 사용자 대화로 추가한다.
-        if self._system_prompt is not None:
+        if self._system_prompt is not None: # system_prompt에 내용이 있으면 사용자 턴
             self.user(self._system_prompt)
-        # 예시 대화가 있으면, 그것을 추가한다.
         if self._few_shot_examples is not None:
             self.apply_turns(self._few_shot_examples, start_agent='user')
         return self
 
-    # 대화 예시 적용!
-    def apply_turns(self, turns: Iterable, start_agent: str):
-        formatters = [self.model, self.user] if start_agent == 'model' else [self.user, self.model] # 대화의 주체에 따라 대화를 번갈아가며 추가할 함수를 정한다.
-        formatters = itertools.cycle(formatters) # 대화가 번갈아가며 계속되게 해줌.
+	
+    # 턴 적용 메서드
+    # `start_agent`가 `model`이면 모델부터 시작하고, `user`이면 유저부터 시작한다.
+    def apply_turns(self, turns: Iterable, start_agent: str): #turns는 적용할 대화 턴의 리스트
+        formatters = [self.model, self.user] if start_agent == 'model' else [self.user, self.model] 
+        
+        formatters = itertools.cycle(formatters) # 모델과 사용자가 대화가 번갈아가며 계속되게 해줌.
         for fmt, turn in zip(formatters, turns): # 주어진 대화 예시를 번갈아가며 추가.
-            fmt(turn)
+            fmt(turn) 
         return self
-
 ```
 
-> _start_token, _end_token : 대화의 시작과 끝을 알려주는 특별한 표시.
->
 > #### 최종적으로 이 클래스가 하는 일
 >
 > 이 클래스는 대화의 형식을 정의하고, 사용자가 말하거나 모델이 말할 때 대화 내용을 형식에 맞게 저장한다. 대화의 시작과 끝을 표시하고, 대화 예시를 쉽게 추가할 수 있도록 도와준다.
@@ -167,21 +170,25 @@ class GemmaFormatter:
 > - Example
 >
 > ```python
-> formatter = GemmaFormatter(system_prompt="Hello, how can I help you today?")
-> formatter.user("I need some information about my order.")
-> formatter.model("Sure, can you please provide your order ID?")
+>formatter = GemmaFormatter(system_prompt="Hello! How can I assist you today?")
+> formatter.user("What is the weather like?")
+> formatter.model("The weather is sunny and warm today.")
 > print(formatter)
+> ```
+
+> ```php
+> # 실제 출력 예시
+> <start_of_turn>user
+> Hello! How can I assist you today?<end_of_turn>
+> <start_of_turn>user
+> What is the weather like?<end_of_turn>
+> <start_of_turn>model
+> The weather is sunny and warm today.<end_of_turn>
 > ```
 
 
 
-## 2. main.py
-
-물론, 환경설정부터 main.py에 작성되지만, 여기는 실제 작동을 위한 코드라고 보면 된다.
-
-
-
-#### 1) 데코레이터와 컨텍스트 매니저
+### 2) 데코레이터와 컨텍스트 매니저
 
 ```python
 # Agent Definitions
@@ -236,7 +243,15 @@ print(tensor.dtype) # 출력 : torch.float32 (= torch.float, 32비트 부동 소
 
 
 
-#### 2) Gemma Agent
+## 3. 에이전트 정의
+
+부모 클래스인 `GemmaAgent`를 먼저 만들고, 이를 상속받아 QuestionerAgent와 AnswerAgent를 나누어 진행하게 된다.
+
+
+
+### 1) `Gemma Agent` 클래스
+
+- 
 
 ```python
 class GemmaAgent:
@@ -405,15 +420,12 @@ Agent = GemmaAgent()
 
 
 
-
+- ##### `_parse_response` 메서드 : 키워드 파싱
 
 ```python
-
-
     def _parse_response(self, response: str, obs: dict):
         raise NotImplementedError
-        
-        
+              
     def interleave_unequal(x, y):
         return [
             item for pair in itertools.zip_longest(x, y) for item in pair if item is not None
@@ -422,9 +434,11 @@ Agent = GemmaAgent()
 
 
 
+### 2) `GemmaQuestionerAgent` 클래스
 
-
-
+> GemmaAgent를 상속받아 만드는 질문자 에이전트로,
+>
+> 우리가 가지고 있는 모델이 질문을 생성하고, 그 질문을 넘겨주는 것 같다.
 
 ```python
 class GemmaQuestionerAgent(GemmaAgent):
@@ -454,9 +468,20 @@ class GemmaQuestionerAgent(GemmaAgent):
             guess = self._parse_keyword(response)
             return guess
         else:
-            raise ValueError("Unknown turn type:", obs.turnType)
+        raise ValueError("Unknown turn type:", obs.turnType)
+```
 
 
+
+
+
+### 3) `GemmaAnswerAgent` 클래스
+
+> Questioner와 마찬가지로, 부모클래스인 GemmaAgent를 상속받아 만들어진다.
+
+
+
+```python
 class GemmaAnswererAgent(GemmaAgent):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -473,7 +498,15 @@ class GemmaAnswererAgent(GemmaAgent):
         answer = self._parse_keyword(response)
         return 'yes' if 'yes' in answer else 'no'
 
+```
 
+
+
+## 4. 에이전트 생성 함수
+
+
+
+```python
 # Agent Creation
 system_prompt = "You are an AI assistant designed to play the 20 Questions game. In this game, the Answerer thinks of a keyword and responds to yes-or-no questions by the Questioner. The keyword is a specific person, place, or thing."
 
@@ -509,8 +542,15 @@ def get_agent(name: str):
     assert agent is not None, "Agent not initialized."
 
     return agent
+```
+
+> LLM learning/Fine tuning(`Few shot learning`)에 대한 이해가 조금 더 필요할 거 같다.
 
 
+
+## 5. 에이전트 함수
+
+```python
 def agent_fn(obs, cfg):
     if obs.turnType == "ask":
         response = get_agent('questioner')(obs)
@@ -523,8 +563,6 @@ def agent_fn(obs, cfg):
     else:
         return response
 ```
-
-LLM learning/Fine tuning(`Few shot learning`)에 대한 이해가 조금 더 필요할 거 같다.
 
 
 
