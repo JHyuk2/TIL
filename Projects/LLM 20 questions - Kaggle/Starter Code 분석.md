@@ -251,7 +251,7 @@ print(tensor.dtype) # 출력 : torch.float32 (= torch.float, 32비트 부동 소
 
 ### 1) `Gemma Agent` 클래스
 
-- 
+- ##### `GemmaFormatter`와 함께 대화 에이전트의 역할을 수행하는 주요 클래스로, 모델을 초기화하고, 대화 세션을 시작하며, 모델을 호출하여 응답을 생성하는 등의 기능을 한다.
 
 ```python
 class GemmaAgent:
@@ -275,6 +275,8 @@ class GemmaAgent:
 
 
 - ##### `__init__` 메서드 : 클래스 정의 및 초기화
+
+> 모델을 초기화하고 필요한 설정을 한다. (모델의 설정 로드, 모델 가중치 로드, 평가 모드로 설정 등)
 
 ```markdown
 #### 1) `__init__` : 객체 생성과 함께 자동으로 호출되는 메서드
@@ -322,7 +324,7 @@ Agent = GemmaAgent()
 
 - `__call__` 메서드 : 객체가 호출될 때 실행
 
-  > `obs`와 추가 인자를 받는다.
+  > `obs(관찰 값, 입력 데이터)`와 추가 인자를 받는다.
   >
   > `_start_session`메서드를 호출하여 세션을 실행한다.
   >
@@ -576,8 +578,6 @@ Query Expansion - Retrieval - Reranker - Passage Filter - Passage compressor - P
 
 - 어떻게 답변을 내놓는지에 대한 이해가 필요할 것 같다.
 - langchain? huggingface?
-
-
 
 
 
