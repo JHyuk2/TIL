@@ -568,8 +568,6 @@ def agent_fn(obs, cfg):
 
 
 
-
-
 ---
 
 ### RAG pipeline

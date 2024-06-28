@@ -99,3 +99,54 @@ select
 >
 > 결과는 같은데 결국 min을 두 개 다 쓰는게 더 좋았던 거 같다. (내생각)
 
+
+
+- 550. Game Play Analysis IV
+
+> 1차 작성한 코드
+>
+> ```mysql
+> # Write your MySQL query statement below
+> # condition
+> # 1) count >= 2
+> # 2) event_date1 - event_date2 = 1
+> 
+> with CTE as (
+>     select player_id, min(event_date) as first_date, count(*) as days
+>     from Activity
+>     group by player_id)
+> ,
+> 
+> fraction_user as(
+>     select CTE.player_id, CTE.first_date, min(A.event_date) as second_date , CTE.days
+>     from CTE join Activity as A on CTE.player_id = A.player_id
+>     where CTE.days >= 2 and A.event_date != CTE.first_date
+>     group by CTE.player_id
+>     having datediff(first_date, second_date) = -1)
+> 
+> select round(count(distinct(fraction_user.player_id))/count(distinct(A.player_id)), 2) as fraction
+> from Activity as A left join fraction_user on fraction_user.player_id = A.player_id
+> ```
+>
+> 이렇게 작성했을 때, 코드의 가독성이 나빠지게 되며 이해하기 어려운 코드처럼 보이게 된다.
+>
+> 다른 사람이 작성한 코드와 비교해보자
+>
+> ```mysql
+> # Write your MySQL query statement below
+> select 
+>     round(sum(temp)/count(distinct player_id), 2) as fraction
+> from 
+> (
+>   select
+>     player_id,
+>     datediff(event_date, min(event_date) over(partition by player_id)) = 1 as temp
+>   from 
+>     Activity
+> ) as t
+> ```
+>
+> 진짜 고수의 깔끔한 코드.
+>
+> partition by 등의 윈도우 함수를 잘 알아두는 것이 필요할 것 같다.
+
