@@ -568,6 +568,40 @@ def get_agent(name: str):
 
 
 
+### 4-1) `Prompt Engineering`
+
+**프롬프트 엔지니어링**은 AI 모델에게 특정 작업을 수행하도록 지시하는 방법을 설계하는 과정이다.
+
+프롬프트 엔지니어링의 목표는 모델이 주어진 문맥을 정확하게 이해하고, 기대되는 방식으로 응답하도록 하는 것이다.
+
+프롬프트 엔지니어링을 통해 모델의 성능을 향상시킬 수 있는 방법은 다양하다. 그 중에서 가장 흔히 쓰이는 방법은 `역할 부여`이다.
+
+우리 프롬프트에서도 첫 줄에 다음과 같이 쓰여있는 것이 바로 역할 부여이다.
+
+- `You are an AI assistant designed to play the 20 Questions game.`
+
+- **역할**
+
+  - **맥락 제공** : 모델이 대화나 작업의 맥락을 이해하도록 돕는다. 
+
+  - **지침 제공** : 모델에게 특정 역할이나 행동 지침을 제공
+
+> [참고영상 - 조코딩님의 프롬프트 엔지니어링](https://www.youtube.com/watch?v=mC2b57u_s0k)
+
+
+
+### 4-2) `Few-Shot Learning`
+
+**Few-shot learning**이란, 모델이 적은 양의 학습 데이터로도 새로운 작업을 수행할 수 있도록 하는 학습 방법이다.
+
+few shot learning에서는 몇 가지 예시만으로도 모델이 새로운 작업에 적응할 수 있도록 한다.
+
+- **사용법**
+  - **예시 제공** : 모델이 유사한 문맥에서 어떻게 응답해야 하는지 학습시킨다.
+  - **패턴 학습** : 모델이 제공된 예시를 통해 패턴을 학습하고, 새로운 입력에 대해 적절한 응답을 생성하도록 한다.
+
+
+
 ```python
 def agent_fn(obs, cfg):
     if obs.turnType == "ask":
@@ -590,7 +624,7 @@ def agent_fn(obs, cfg):
 
 ---
 
-### RAG pipeline
+### 	RAG pipeline
 
 Query Expansion - Retrieval - Reranker - Passage Filter - Passage compressor - Prompt maker - Generator(LLM)
 
