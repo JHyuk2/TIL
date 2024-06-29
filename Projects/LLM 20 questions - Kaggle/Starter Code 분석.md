@@ -434,11 +434,13 @@ Agent = GemmaAgent()
         ]
 ```
 
+> 응답을 파싱하는 추상 메서드이다.
+
 
 
 ### 2) `GemmaQuestionerAgent` 클래스
 
-> GemmaAgent를 상속받아 만드는 질문자 에이전트로,
+> GemmaAgent를 상속받아 만드는 질문자 에이전트로, 질문자 역할을 수행하는 에이전트이다.
 >
 > 우리가 가지고 있는 모델이 질문을 생성하고, 그 질문을 넘겨주는 것 같다.
 
@@ -473,9 +475,19 @@ class GemmaQuestionerAgent(GemmaAgent):
         raise ValueError("Unknown turn type:", obs.turnType)
 ```
 
+- ##### `_start_session` 메서드 
 
+  > 세션을 초기화하고, 사용자에게 질문을 요청한다.
 
+- ##### `_parse_response` 메서드
 
+  > 모델의 응답을 파싱하여 질문 또는 추측을 반환한다.
+  >
+  > 만약 관측된 값이 'ask'인 경우 (`질문`인경우) question을 반환,
+  >
+  > guess (추측)일 경우, 추측값을 반환한다.
+
+  
 
 ### 3) `GemmaAnswerAgent` 클래스
 
@@ -502,11 +514,11 @@ class GemmaAnswererAgent(GemmaAgent):
 
 ```
 
+> 위의 Questioner와 거의 동일하다. 다만, 답변이 Yes or No로 반환될 뿐!
 
 
-## 4. 에이전트 생성 함수
 
-
+## 4. 에이전트 생성 함수 및 호출 함수
 
 ```python
 # Agent Creation
@@ -546,11 +558,15 @@ def get_agent(name: str):
     return agent
 ```
 
-> LLM learning/Fine tuning(`Few shot learning`)에 대한 이해가 조금 더 필요할 거 같다.
+- **시스템 프롬프트와 예시(Few shot)** : 프롬프트 엔지니어링 영역으로, 역할 부여라고 볼 수 있따.
+
+- ##### `get_agent`: 에이전트 생성 함수 
+
+  > 에이전트를 생성하고 초기화한다. 글로벌 변수를 사용하여 에이전트가 이미 초기화되어있는지 확인한다.
+
+- LLM learning/Fine tuning(`Few shot learning`)에 대한 이해가 조금 더 필요할 거 같다.
 
 
-
-## 5. 에이전트 함수
 
 ```python
 def agent_fn(obs, cfg):
@@ -566,7 +582,11 @@ def agent_fn(obs, cfg):
         return response
 ```
 
+- ##### `agent_fn` : 에이전트 호출 함수
 
+  > 주어진 관찰 값(`obs`)에 따라 적절한 에이전트를 호출하여 응답을 생성하는 호출 함수.
+
+  
 
 ---
 
