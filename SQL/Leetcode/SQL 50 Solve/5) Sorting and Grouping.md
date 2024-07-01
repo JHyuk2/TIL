@@ -39,3 +39,40 @@ from CTE
 > 
 > ```
 
+
+
+- customer who bought all products
+
+> ```mysql
+> select customer_id
+> from Customer
+> group by customer_id
+> having count(distinct(product_key)) = (
+>     select count(*)
+>     from Product
+> )
+> ```
+>
+> 다시 풀어보니 훨씬 잘된다..!
+>
+> 
+>
+> 친절한 GPT에게 물어보니, 코드는 잘 짰는데, 가독성을 늘려보는 게 어떻냐고한다.
+>
+> ```mysql
+> -- Subquery to get the total number of unique products
+> WITH TotalProducts AS (
+>     SELECT COUNT(*) AS total_count
+>     FROM Product
+> )
+> 
+> -- Main query to find customer IDs who bought all products
+> SELECT customer_id
+> FROM Customer
+> GROUP BY customer_id
+> HAVING COUNT(DISTINCT product_key) = (SELECT total_count FROM TotalProducts)
+> 
+> ```
+>
+> 결과는 동일하나 가독성이 나아진 점은 인정이다...
+
