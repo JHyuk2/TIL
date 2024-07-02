@@ -76,3 +76,30 @@ from CTE
 >
 > 결과는 동일하나 가독성이 나아진 점은 인정이다...
 
+
+
+- Restaurant Growth
+
+```mysql
+# Write your MySQL query statement below
+with CTE as(
+    select visited_on, sum(amount) as total
+    from Customer
+    group by visited_on
+)
+
+select visited_on,
+    sum(total) over(order by visited_on ASC rows between 6 preceding and current row) as 'amount',
+    avg(total) over(order by visited_on ASC rows between 6 preceding and current row) as 'average amount'
+    from CTE
+    where DATE_SUB(visited_on, interval 6 day) in (select visited_on from CTE)
+```
+
+> Moving Average를 구현해야 하는 문제이다.
+>
+> 총 금액과 이동평균을 나타내는 방법을 생각해보자.
+>
+> <총 금액 구하기>
+>
+> 1. group by로 날짜별로 묶어주고, 현재일자로부터 7일 이전까지 합계 구하기
+> 2. 
