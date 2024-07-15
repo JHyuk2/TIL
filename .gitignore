@@ -1,5 +1,7 @@
 #.gitingore
 
+*.pdf
+*.txt
 *.pickle
 *.env
 *.csv
