@@ -1,3 +1,5 @@
+# 나중에 클래스화 할 예정.
+
 import requests
 import json
 import os
