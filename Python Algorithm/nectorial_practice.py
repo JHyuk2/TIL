@@ -82,6 +82,9 @@
 
 
 # ---- 3
+# 테스트케이스 11~14 타임익시드 에러.
+# 이 부분 나중에 힙으로 다시 정리해보자.
+
 from collections import deque
 import heapq
 
