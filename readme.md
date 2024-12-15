@@ -29,11 +29,19 @@
   - [Leetcode Problem Solve](https://github.com/JHyuk2/TIL/tree/master/SQL/Leetcode)
 #### Visualization Tool(Tableau)
 
+### 
+
 ---
 
 
 
 ## Others
+
+#### 의존성 관리
+
+- [1. 의존성 관리란?](의존성 관리/1. Dependancies Management.md)
+- [2. 기존 방식과 Poetry](의존성 관리/2. From Requirements.txt to Poetry.md)
+- [3. Poetry 고급 가이드](의존성 관리/3. Poetry Advanced Guide.md)
 
 #### Statistics
 
@@ -44,3 +52,5 @@
 #### Git
 
 #### Markdown
+
+#### 
