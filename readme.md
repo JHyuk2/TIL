@@ -39,9 +39,9 @@
 
 #### 의존성 관리
 
-- [1. 의존성 관리란?](의존성 관리/1. Dependancies Management.md)
-- [2. 기존 방식과 Poetry](의존성 관리/2. From Requirements.txt to Poetry.md)
-- [3. Poetry 고급 가이드](의존성 관리/3. Poetry Advanced Guide.md)
+- [1. 의존성 관리란?](의존성%20관리/1.%20Dependancies%20Management.md)
+- [2. 기존 방식과 Poetry](의존성%20관리/2.%20From%20Requirements.txt%20to%20Poetry.md)
+- [3. Poetry 고급 가이드](의존성%20관리/3.%20Poetry%20Advanced%20Guide.md)
 
 #### Statistics
 
