@@ -9,6 +9,20 @@
    - 언어 지원: 다국어 (한국어 포함).
    - 다운로드: [Hugging Face - Whisper GGUF](https://huggingface.co/models?search=whisper+gguf)
 
+   - whisper-large-v3 모델을 gguf 로 quantize
+  
+   1) [Whisper.cpp 설치](https://github.com/ggerganov/whisper.cpp?tab=readme-ov-file)
+   > 하려고 했으나... 컴퓨터 이슈로 잠시 멈춤 ㅠ
+   > 양자화된 모델을 사용하기로 변경
+   
+   ```bash
+   git clone https://github.com/ggerganov/whisper.cpp
+   cd whisper.cpp
+   make
+   ```
+
+
+
 2. **LLaMA 2 GGUF**
    - Meta의 LLaMA 2 모델의 양자화 버전.
    - 텍스트 생성 및 대화에 적합.
