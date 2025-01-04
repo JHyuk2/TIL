@@ -1,0 +1,22 @@
+[tool.poetry]
+name = "ai 영어대화"
+version = "0.1.0"
+description = ""
+authors = ["JHyuk2 <whdgurdl77@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.12"
+transformers = "^4.47.1"
+datasets = "^3.2.0"
+accelerate = "^1.2.1"
+torch = "^2.5.1"
+ipykernel = "^6.29.5"
+jupyterlab = "^4.3.4"
+ipywidgets = "^8.1.5"
+numpy = "<=2.0"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
