@@ -21,6 +21,9 @@ bitsandbytes = "^0.45.0"
 torchvision = "^0.20.1"
 optimum = "^1.23.3"
 ctransformers = "^0.2.27"
+pyaudio = "^0.2.14"
+soundfile = "^0.13.1"
+sounddevice = "^0.5.1"
 
 
 [build-system]
